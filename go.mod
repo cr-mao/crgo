@@ -7,6 +7,7 @@ require (
 	github.com/baiyubin/aliyun-sts-go-sdk v0.0.0-20180326062324-cfa1a18b161f // indirect
 	github.com/go-redis/redis/v8 v8.0.0-beta.10
 	github.com/go-sql-driver/mysql v1.5.0
+	github.com/golang/protobuf v1.4.2
 	github.com/jinzhu/gorm v1.9.12
 	github.com/kr/pretty v0.2.0 // indirect
 	github.com/mitchellh/mapstructure v1.1.2
@@ -17,5 +18,6 @@ require (
 	golang.org/x/sys v0.0.0-20200817155316-9781c653f443 // indirect
 	golang.org/x/text v0.3.3 // indirect
 	golang.org/x/time v0.0.0-20191024005414-555d28b269f0 // indirect
+	google.golang.org/grpc v1.27.0
 	google.golang.org/protobuf v1.25.0 // indirect
 )

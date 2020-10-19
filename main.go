@@ -17,6 +17,8 @@ func init() {
 	rootCmd.AddCommand(cmd.WordCmd)
 	rootCmd.AddCommand(cmd.TimeCmd)
 	rootCmd.AddCommand(cmd.SqlCmd)
+	rootCmd.AddCommand(cmd.GrpcServeCmd)
+	rootCmd.AddCommand(cmd.GrpcClientCmd)
 }
 
 func main() {
