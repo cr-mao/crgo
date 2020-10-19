@@ -9,7 +9,10 @@ import (
 )
 
 func Run() error {
-	s := grpc.NewServer()
+	var grpcOption = []grpc.ServerOption{
+		grpc.UnaryInterceptor(HelloInterceptor),
+	}
+	s := grpc.NewServer(grpcOption...)
 	helloworld.RegisterGreeterServer(s, &helloworld.Binding{})
 	lis, err := net.Listen("tcp", ":8001")
 	if err != nil {
