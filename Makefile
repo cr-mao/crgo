@@ -6,3 +6,7 @@ serve:
 	go run -ldflags $(LDFLAGS) main.go serve
 %:
 	@true
+
+
+codegen:
+	sh scripts/codegen.sh
