@@ -1,0 +1,36 @@
+[database]
+[database.test]
+dsn = "root:@tcp(127.0.0.1:3306)/test?parseTime=true&charset=utf8&loc=Asia%2FShanghai"
+max_open_conns = 30
+mac_idle_conns = 10
+debug = true
+
+
+[redis]
+[redis.default]
+addr = "127.0.0.1:6379"
+db = 0
+password = ""
+
+[redis.session]
+addr = "127.0.0.1:6379"
+db = 1
+password = ""
+
+
+[oss]
+[oss.aliyun]
+endpoint = ""
+access_key_id = ""
+access_key_secret = ""
+bucket = ""
+
+
+[cdn]
+domain = ""
+
+
+[rabbitmq]
+[rabbitmq.test]
+dsn = "amqp://guest:guest@localhost:5672/"
+
