@@ -6,7 +6,6 @@ import (
 	"crgo/infra/conf"
 	"crgo/infra/db"
 	"crgo/infra/log"
-	"crgo/infra/rabbitmq"
 	"crgo/infra/redis"
 )
 
@@ -15,5 +14,5 @@ func init() {
 	cobra.OnInitialize(log.InitLogger)
 	cobra.OnInitialize(db.InitDB)
 	cobra.OnInitialize(redis.InitRedis)
-	cobra.OnInitialize(rabbitmq.Init)
+	//cobra.OnInitialize(rabbitmq.Init)
 }
