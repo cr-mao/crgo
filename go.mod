@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/gin-gonic/gin v1.6.3
+	github.com/go-oauth2/oauth2/v4 v4.4.3
 	github.com/go-redis/redis/v8 v8.0.0-beta.10
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/golang/protobuf v1.4.2
@@ -15,7 +16,7 @@ require (
 	github.com/spf13/viper v1.4.0
 	github.com/streadway/amqp v1.0.0
 	go.uber.org/zap v1.13.0
-	golang.org/x/crypto v0.0.0-20191205180655-e7c4368fe9dd
+	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 	golang.org/x/sys v0.0.0-20200817155316-9781c653f443 // indirect
 	golang.org/x/text v0.3.3 // indirect
 	google.golang.org/grpc v1.27.0

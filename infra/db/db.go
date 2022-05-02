@@ -49,5 +49,5 @@ func GetDb(bind string) *gorm.DB {
 	if db, ok := connectionMap.mapping[bind]; ok {
 		return db
 	}
-	panic(fmt.Sprintf("redis bind %s get failed", bind))
+	panic(fmt.Sprintf("db bind %s get failed", bind))
 }

@@ -20,6 +20,8 @@ func init() {
 	rootCmd.AddCommand(cmd.GrpcServeCmd)
 	rootCmd.AddCommand(cmd.HttpServeCmd)
 	rootCmd.AddCommand(cmd.GrpcClientCmd)
+	rootCmd.AddCommand(cmd.RabbitMqTestCmd)
+	rootCmd.AddCommand(cmd.RabbitMqTestCmd)
 }
 
 func main() {

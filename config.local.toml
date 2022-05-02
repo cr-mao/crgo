@@ -32,5 +32,5 @@ domain = ""
 
 [rabbitmq]
 [rabbitmq.test]
-dsn = "amqp://guest:guest@localhost:5672/"
+dsn = "amqp://guest:guest@127.0.0.1:5672/"
 

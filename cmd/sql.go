@@ -36,7 +36,7 @@ var sql2structCmd = &cobra.Command{
 			Password: password,
 			Charset:  charset,
 		}
-		fmt.Printf("%#v", dbInfo)
+		fmt.Printf("%#v\n", dbInfo)
 		dbModel := sql2struct.NewDBModel(dbInfo)
 		err := dbModel.Connect()
 		if err != nil {

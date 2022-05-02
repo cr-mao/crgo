@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"crgo/infra/rabbitmq"
 	"github.com/spf13/cobra"
 
 	"crgo/infra/conf"
@@ -14,5 +15,5 @@ func init() {
 	cobra.OnInitialize(log.InitLogger)
 	cobra.OnInitialize(db.InitDB)
 	cobra.OnInitialize(redis.InitRedis)
-	//cobra.OnInitialize(rabbitmq.Init)
+	cobra.OnInitialize(rabbitmq.Init)
 }
