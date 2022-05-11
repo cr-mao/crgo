@@ -133,7 +133,6 @@ func main() {
 	}
 	//打印修改属性值 后的 u
 	fmt.Println(u) // &{100 100 maodada}
-
 	//通过切片 隐射  改变 结构体的属性值
 	s1 := []interface{}{
 		1, 2, "mao",
@@ -160,7 +159,6 @@ func main() {
 
 	Map2Struct(m, u1)
 	fmt.Println(u1) // &{2 0 mdd}
-
 }
 
 func Map2Struct(m map[string]interface{}, u interface{}) {

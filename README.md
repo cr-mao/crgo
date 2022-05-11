@@ -1,6 +1,7 @@
 # my golang framework
   - 项目框架的搭建
   - 集成一些常用工具集
+  - 面试题解题 
   
   
  
@@ -27,9 +28,12 @@ $ go run main.go --help
 
 
 #### 目录说明
+face 面试题
+
 httpproject 基于gin的基础框架项目
 
 grpcproject 基于grpc的基础框架项目
+
 
 infra  基础架构
    - conf 配置处理
@@ -38,6 +42,7 @@ infra  基础架构
    - httpresp  http响应处理
    - redis 初始化redis
    
+
 
 
 
