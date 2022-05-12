@@ -52,7 +52,7 @@ func main2() {
 	var c = make(chan int)
 	var ret = make(chan struct{})
 	go producer1(c)
-	consumer2(c, ret)
+	consumer3(c, ret)
 	<-ret
 }
 
