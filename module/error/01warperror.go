@@ -43,7 +43,7 @@ func ReadConfig()([]byte,error) {
 func main(){
 	_,err :=ReadConfig()
 	if err !=nil {
-		fmt.Println("original error:%T %v\n",errors.Cause(err),errors.Cause(err))
+		fmt.Printf("original error:%T %v\n",errors.Cause(err),errors.Cause(err))
 		fmt.Printf("stack stace :\n %+v\n",err)
 		os.Exit(1)
 	}
