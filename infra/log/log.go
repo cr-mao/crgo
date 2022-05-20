@@ -23,6 +23,7 @@ var Infof func(format string, args ...interface{})
 var Warnf func(format string, args ...interface{})
 
 var Errorf func(format string, args ...interface{})
+var Fatalf func(format string, args ...interface{})
 
 func InitLogger() {
 	var logger *zap.Logger
@@ -47,4 +48,5 @@ func InitLogger() {
 	Warnf = sugarLogger.Warnf
 	Error = sugarLogger.Error
 	Errorf = sugarLogger.Errorf
+	Fatalf = sugarLogger.Fatalf
 }

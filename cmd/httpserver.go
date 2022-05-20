@@ -8,7 +8,7 @@ import (
 )
 
 var HttpServeCmd = &cobra.Command{
-	Use:   "httpserver",
+	Use:   "httpserve",
 	Short: "http serve",
 	Long:  desc,
 	PreRun: func(cmd *cobra.Command, args []string) {

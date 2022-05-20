@@ -3,6 +3,7 @@ module crgo
 go 1.13
 
 require (
+	github.com/fsnotify/fsnotify v1.4.9
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-oauth2/oauth2/v4 v4.4.3
 	github.com/go-redis/redis/v8 v8.0.0-beta.10

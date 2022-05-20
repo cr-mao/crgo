@@ -29,7 +29,7 @@ $ go run main.go --help
 
 
 #### 目录说明
-face 面试题
+
 
 httpproject 基于gin的基础框架项目
 
@@ -43,6 +43,14 @@ infra  基础架构
    - httpresp  http响应处理
    - redis 初始化redis
    
+scripts  脚本运行
+   
+   
+
+非项目相关   
+face 面试题
+module  一些模块实现案例
+
 
 
 

@@ -2,14 +2,16 @@ package httpproject
 
 import (
 	"context"
-	"crgo/httpproject/routers"
-	"crgo/infra/conf"
+	"crgo/infra/util"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"crgo/httpproject/routers"
+	"crgo/infra/conf"
 )
 
 func Run() error {
@@ -21,17 +23,18 @@ func Run() error {
 		WriteTimeout:   60 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
-	err := s.ListenAndServe()
-	if err != nil {
-		return err
-	}
 
 	go func() {
 		if err := s.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("s.ListenAndServe err: %v", err)
 		}
 	}()
-	//
+
+	//更新黑名单 内存
+	go func() {
+		util.WatchBlacklist()
+	}()
+
 	quit := make(chan os.Signal)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
