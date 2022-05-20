@@ -2,11 +2,10 @@ VERSION = `git rev-parse --short HEAD`
 BUILDTIME = `date +%FT%T`
 LDFLAGS = "-s -w -X crgo/cmd.Version=$(VERSION) -X crgo/cmd.BuildTime=$(BUILDTIME)"
 
-grpcserve:
-  go run -ldflags $(LDFLAGS) main.go grpcserve
+serve:
+  go run -ldflags $(LDFLAGS) main.go serve
 
-httpserve:
-  go run -ldflags $(LDFLAGS) main.go httpserve
+
 
 %:
 	@true

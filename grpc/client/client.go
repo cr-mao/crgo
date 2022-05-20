@@ -2,7 +2,7 @@ package client
 
 import (
 	"context"
-	"crgo/grpcproject/biz/helloworld"
+	"crgo/grpc/biz/helloworld"
 	"google.golang.org/grpc"
 	"log"
 )

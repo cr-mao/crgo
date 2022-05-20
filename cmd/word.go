@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"crgo/internal/word"
+	"crgo/infra/word"
 	"github.com/spf13/cobra"
 	"log"
 	"strings"

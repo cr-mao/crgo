@@ -17,10 +17,8 @@ func init() {
 	rootCmd.AddCommand(cmd.WordCmd)
 	rootCmd.AddCommand(cmd.TimeCmd)
 	rootCmd.AddCommand(cmd.SqlCmd)
-	rootCmd.AddCommand(cmd.GrpcServeCmd)
-	rootCmd.AddCommand(cmd.HttpServeCmd)
+	rootCmd.AddCommand(cmd.ServeCmd)
 	rootCmd.AddCommand(cmd.GrpcClientCmd)
-	rootCmd.AddCommand(cmd.RabbitMqTestCmd)
 	rootCmd.AddCommand(cmd.RabbitMqTestCmd)
 }
 

@@ -1,12 +1,14 @@
 package cmd
 
 import (
-	"crgo/internal/timer"
-	"github.com/spf13/cobra"
 	"log"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/spf13/cobra"
+
+	"crgo/infra/timer"
 )
 
 var calculateTime string

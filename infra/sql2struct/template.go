@@ -1,7 +1,7 @@
 package sql2struct
 
 import (
-	"crgo/internal/word"
+	"crgo/infra/word"
 	"fmt"
 	"os"
 	"text/template"

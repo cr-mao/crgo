@@ -30,26 +30,19 @@ $ go run main.go --help
 
 #### 目录说明
 
-
-httpproject 基于gin的基础框架项目
-
-grpcproject 基于grpc的基础框架项目
-
-
-infra  基础架构
+- http 基于gin的基础框架的http服务
+- grpc 基于grpc框架的rpc服务
+- infra  基础架构
    - conf 配置处理
    - log log处理
    - db  初始化mysql
    - httpresp  http响应处理
    - redis 初始化redis
+- scripts  脚本运行
+- docs     文档说明   
+- build    构建相关
+- module 一些模块实现案例以及面试题 (**和项目没任何关系**)
    
-scripts  脚本运行
-   
-   
-
-非项目相关   
-face 面试题
-module  一些模块实现案例
 
 
 

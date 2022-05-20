@@ -10,7 +10,7 @@ func NewRouter() *gin.Engine {
 	gin.SetMode("debug")
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
-	router.LoadHTMLGlob("httpproject/view/*")
+	router.LoadHTMLGlob("http/view/*")
 	router.GET("/upload", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "upload.html", gin.H{
 			"title": "Main website",

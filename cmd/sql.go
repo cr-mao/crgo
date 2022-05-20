@@ -6,7 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"crgo/internal/sql2struct"
+	"crgo/infra/sql2struct"
 )
 
 var username string
