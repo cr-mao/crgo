@@ -2,13 +2,12 @@ package cmd
 
 import (
 	"context"
-	nethttp "net/http"
+	"errors"
+	"github.com/spf13/cobra"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
-
-	"github.com/spf13/cobra"
 
 	"crgo/grpc"
 	"crgo/http"
@@ -32,37 +31,58 @@ var ServeCmd = &cobra.Command{
 
 //http , grpc服务一起启动
 func Run() error {
-	quit := make(chan os.Signal)
+	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-	httpServe := http.NewServe()
-	grpcServe := grpc.NewGrpcServe()
-	grpcListener := grpc.NewListen()
+	var errChan = make(chan error, 3)
+	var stopChan = make(chan struct{})
 	go func() {
-		if err := httpServe.ListenAndServe(); err != nil && err != nethttp.ErrServerClosed {
-			log.Errorf("http ListenAndServe error %v", err)
-			quit <- syscall.SIGINT
-		}
+		errChan <- HttpServe(stopChan)
 	}()
+
 	go func() {
-		if err := grpcServe.Serve(grpcListener); err != nil {
-			log.Errorf("grpc Serve err: %v", err)
-			quit <- syscall.SIGINT
-		}
+		errChan <- GrpcServe(stopChan)
 	}()
+
 	//更新黑名单 内存
 	go func() {
 		util.WatchBlacklist()
 	}()
-
-	<-quit
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-	if err := httpServe.Shutdown(ctx); err != nil {
-		log.Warnf("http server forced to shutdown:%v", err)
+	go func() {
+		<-quit
+		errChan <- errors.New("手动关闭")
+	}()
+	var stopped bool
+	for i := 0; i < cap(errChan); i++ {
+		if err := <-errChan; err != nil {
+			log.Infof("shutdown error:%v", err)
+		}
+		if !stopped {
+			stopped = true
+			close(stopChan)
+		}
 	}
-	log.Info("HTTP Server exit.")
-	// shutdown grpc server
-	grpcServe.GracefulStop()
-	log.Info("gRPC Server exit.")
+
+	time.Sleep(time.Second * 5)
+
 	return nil
+}
+
+func HttpServe(stop <-chan struct{}) error {
+	httpServe := http.NewServe()
+	go func() {
+		<-stop
+		httpServe.Shutdown(context.Background())
+	}()
+	return httpServe.ListenAndServe()
+}
+
+func GrpcServe(stop <-chan struct{}) error {
+	grpcServe := grpc.NewGrpcServe()
+	grpcListener := grpc.NewListen()
+	go func() {
+		<-stop
+		grpcServe.GracefulStop()
+	}()
+
+	return grpcServe.Serve(grpcListener)
 }

@@ -24,11 +24,16 @@ func NewRouter() *gin.Engine {
 			"payload":  "",
 		})
 	})
+
+
 	{
 		authRouter :=router.Group("/").Use(Auth())
 		authRouter.GET("/", func(context *gin.Context) {
 			context.String(http.StatusOK, "hello gin")
 		})
 	}
+
+
+
 	return router
 }
