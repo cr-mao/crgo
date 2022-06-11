@@ -1,12 +1,14 @@
 package routers
 
 import (
+	"crgo/http/dto"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 func NewRouter() *gin.Engine {
-	router :=gin.New()
+	router := gin.New()
 	gin.SetMode("debug")
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
@@ -25,15 +27,50 @@ func NewRouter() *gin.Engine {
 		})
 	})
 
+	//
+	//{
+	//	authRouter :=router.Group("/").Use(Auth())
+	//	authRouter.GET("/", func(context *gin.Context) {
+	//		context.String(http.StatusOK, "hello gin")
+	//	})
+	//}
 
 	{
-		authRouter :=router.Group("/").Use(Auth())
-		authRouter.GET("/", func(context *gin.Context) {
-			context.String(http.StatusOK, "hello gin")
-		})
+		userRoute := router
+		userRoute.POST("/users", Create)
+		userRoute.GET("/users/:name", Get)
 	}
 
-
-
 	return router
+}
+
+var users []*dto.User
+
+func Create(c *gin.Context) {
+	var user dto.User
+	if err := c.ShouldBindJSON(&user); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error(), "code": 10001})
+		return
+	}
+
+	for _, u := range users {
+		if u.Name == user.Name {
+			c.JSON(http.StatusBadRequest, gin.H{"message": fmt.Sprintf("user %s already exist", user.Name), "code": 10001})
+			return
+		}
+	}
+
+	users = append(users, &user)
+	c.JSON(http.StatusOK, user)
+}
+
+func Get(c *gin.Context) {
+	username := c.Param("name")
+	for _, u := range users {
+		if u.Name == username {
+			c.JSON(http.StatusOK, u)
+			return
+		}
+	}
+	c.JSON(http.StatusBadRequest, gin.H{"message": fmt.Sprintf("user %s not exist", username), "code": 10002})
 }
