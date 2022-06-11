@@ -26,20 +26,22 @@ func cancel2(chanChan chan struct{}) {
 }
 
 func doTask(i int, cancelChan chan struct{}) {
+
 	for {
 		if isCanceled(cancelChan) {
 			break
 		}
 		time.Sleep(time.Millisecond * 100)
+
 	}
 	fmt.Println(i, "canceled")
 }
 
 func TestCancel(t *testing.T) {
 	var cancelChan = make(chan struct{})
-	for i := 0; i < 5; i++ {
+	for i := 0; i < 10; i++ {
 		go doTask(i, cancelChan)
 	}
 	cancel2(cancelChan)
-	time.Sleep(time.Second)
+	time.Sleep(time.Second * 2)
 }

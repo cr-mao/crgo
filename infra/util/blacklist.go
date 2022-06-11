@@ -35,7 +35,7 @@ func onBlacklistChange(in fsnotify.Event) {
 		updateBlacklist()
 	}
 }
-
+//可以用atomic 替换
 func updateBlacklist() {
 	filePath := viper.GetString("blacklist.filePath")
 	fp, err := os.Open(filePath)

@@ -1,11 +1,12 @@
 package main
 
 import (
-	"crgo/cmd"
 	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
+
+	"crgo/cmd"
 )
 
 var rootCmd = &cobra.Command{
@@ -23,6 +24,7 @@ func init() {
 }
 
 func main() {
+
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)

@@ -13,9 +13,7 @@ func TestCountWaitGroup(t *testing.T) {
 	for i := 0; i < 5000; i++ {
 		wg.Add(1)
 		go func() {
-			defer func() {
-				lock.Unlock()
-			}()
+			defer lock.Unlock()
 			lock.Lock()
 			count++
 			wg.Done()

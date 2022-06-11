@@ -1,6 +1,8 @@
 package test
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestString(t *testing.T) {
 	s := "中"

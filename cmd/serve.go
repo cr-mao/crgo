@@ -3,11 +3,12 @@ package cmd
 import (
 	"context"
 	"errors"
-	"github.com/spf13/cobra"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/spf13/cobra"
 
 	"crgo/grpc"
 	"crgo/http"
@@ -71,6 +72,7 @@ func HttpServe(stop <-chan struct{}) error {
 	httpServe := http.NewServe()
 	go func() {
 		<-stop
+		//可以给个超时关闭
 		httpServe.Shutdown(context.Background())
 	}()
 	return httpServe.ListenAndServe()
