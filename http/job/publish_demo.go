@@ -1,7 +1,0 @@
-package job
-
-
-
-func publish(){
-
-}

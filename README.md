@@ -36,7 +36,6 @@ $ go run main.go --help
    - conf 配置处理
    - log log处理
    - db  初始化mysql
-   - httpresp  http响应处理
    - redis 初始化redis
 - scripts  脚本运行
 - docs     文档说明   

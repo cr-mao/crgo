@@ -1,31 +1,75 @@
 package routers
 
 import (
-	"crgo/http/dto"
-	"fmt"
+	"crgo/http/middleware"
 	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"strings"
 )
+
+// 404处理
+func setup404Handler(r *gin.Engine) {
+	// 添加 Get 请求路路由
+	r.NoRoute(func(c *gin.Context) {
+		accept := c.Request.Header.Get("Accept")
+		if strings.Contains(accept, "text/html") {
+			c.String(http.StatusNotFound, "404 页面不存在")
+		} else {
+			c.JSON(http.StatusNotFound, gin.H{
+				"code": 40401,
+				"msg":  "请求路由不存在",
+				"data": "",
+			})
+		}
+	})
+}
+
+//全局中间件
+func registerGlobalMiddleWare(router *gin.Engine) {
+	router.Use(
+		gin.Logger(),
+		gin.Recovery(),
+		middleware.ErrorHandler(),
+	)
+}
+
+// RegisterAPIRoutes 注册网页相关路由
+func RegisterAPIRoutes(r *gin.Engine) {
+	// 测试一个 v1 的路由组，我们所有的 v1 版本的路由都将存放到这里
+	v1 := r.Group("/v1")
+	{
+		// 注册一个路由
+		v1.GET("/", func(c *gin.Context) {
+			// 以 JSON 格式响应
+			c.JSON(http.StatusOK, gin.H{
+				"Hello": "World!",
+			})
+		})
+	}
+}
 
 func NewRouter() *gin.Engine {
 	router := gin.New()
 	gin.SetMode("debug")
-	router.Use(gin.Logger())
-	router.Use(gin.Recovery())
-	router.LoadHTMLGlob("http/view/*")
-	router.GET("/upload", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "upload.html", gin.H{
-			"title": "Main website",
-		})
-	})
-	// 添加 Get 请求路路由
-	router.NoRoute(func(c *gin.Context) {
-		c.JSON(http.StatusNotFound, gin.H{
-			"err_code": 40401,
-			"err_msg":  "请求路由不存在",
-			"payload":  "",
-		})
-	})
+	registerGlobalMiddleWare(router)
+	setup404Handler(router)
+	RegisterAPIRoutes(router)
+
+
+	//router.LoadHTMLGlob("http/view/*")
+	////v1 版本的分组
+	//v1 :=router.Group("/v1")
+	//{
+	//	v1.GET("/upload", func(c *gin.Context) {
+	//		c.HTML(http.StatusOK, "upload.html", gin.H{
+	//			"title": "Main website",
+	//		})
+	//	})
+	//
+	//	adminLoginRoute :=v1.Group("/admin_login")
+	//	controller.AdminRegisterRegister(adminLoginRoute)
+	//}
 
 	//
 	//{
@@ -35,42 +79,9 @@ func NewRouter() *gin.Engine {
 	//	})
 	//}
 
-	{
-		userRoute := router
-		userRoute.POST("/users", Create)
-		userRoute.GET("/users/:name", Get)
-	}
+	//router.GET("/gorm_test", func(context *gin.Context) {
+	//})
 
 	return router
-}
 
-var users []*dto.User
-
-func Create(c *gin.Context) {
-	var user dto.User
-	if err := c.ShouldBindJSON(&user); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error(), "code": 10001})
-		return
-	}
-
-	for _, u := range users {
-		if u.Name == user.Name {
-			c.JSON(http.StatusBadRequest, gin.H{"message": fmt.Sprintf("user %s already exist", user.Name), "code": 10001})
-			return
-		}
-	}
-
-	users = append(users, &user)
-	c.JSON(http.StatusOK, user)
-}
-
-func Get(c *gin.Context) {
-	username := c.Param("name")
-	for _, u := range users {
-		if u.Name == username {
-			c.JSON(http.StatusOK, u)
-			return
-		}
-	}
-	c.JSON(http.StatusBadRequest, gin.H{"message": fmt.Sprintf("user %s not exist", username), "code": 10002})
 }
