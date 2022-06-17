@@ -19,11 +19,13 @@ var (
 )
 
 
+var viperObj *viper.Viper
 func fromEnv() {
 	// viper.SetEnvPrefix("cr")
-	viper.SetDefault("env", os.Getenv("env"))
-	viper.AutomaticEnv()
-	env = strings.ToUpper(viper.GetString("env"))
+	viperObj=viper.New()
+	viperObj.SetDefault("env", os.Getenv("env"))
+	viperObj.AutomaticEnv()
+	env = strings.ToUpper(viperObj.GetString("env"))
 	if !(IsDev() || IsFP() || IsBeta() || IsProd() || IsTest()) {
 		env = "DEV"
 	}
@@ -31,15 +33,16 @@ func fromEnv() {
 }
 
 func fromConfigFile() {
-	if IsTest() {
-		configName = "test"
-	} else if !IsDev() {
-		configName = "config"
+
+
+	if !IsDev() {
+		configName = "config.local"
 	}
-	viper.SetConfigName(configName)
-	viper.AddConfigPath(".")
+	viperObj.SetConfigType("toml")
+	viperObj.SetConfigName(configName)
+	viperObj.AddConfigPath(".")
 	log.Printf("Configuration: %s.toml", configName)
-	if err := viper.ReadInConfig(); err != nil {
+	if err := viperObj.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
 			log.Printf("Configuration Not Found")
 		} else {
@@ -61,4 +64,11 @@ func InitConfig() {
 		a()
 	}
 	//fmt.Println(viper.GetStringMap("database"))
+}
+
+
+
+//获得主 viper对象
+func GetViper() *viper.Viper {
+	return viperObj
 }

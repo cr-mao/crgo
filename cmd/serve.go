@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"crgo/infra/util"
 	"errors"
 	"os"
 	"os/signal"
@@ -13,7 +14,6 @@ import (
 	"crgo/grpc"
 	"crgo/http"
 	"crgo/infra/log"
-	"crgo/infra/util"
 )
 
 var ServeCmd = &cobra.Command{

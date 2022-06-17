@@ -1,11 +1,12 @@
 package routers
 
 import (
-	"crgo/http/middleware"
-	"github.com/gin-gonic/gin"
 	"net/http"
-
 	"strings"
+
+	"github.com/gin-gonic/gin"
+
+	"crgo/http/middleware"
 )
 
 // 404处理
@@ -55,7 +56,6 @@ func NewRouter() *gin.Engine {
 	registerGlobalMiddleWare(router)
 	setup404Handler(router)
 	RegisterAPIRoutes(router)
-
 
 	//router.LoadHTMLGlob("http/view/*")
 	////v1 版本的分组

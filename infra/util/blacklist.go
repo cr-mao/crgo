@@ -2,6 +2,7 @@ package util
 
 import (
 	"bufio"
+	"crgo/infra/conf"
 	"os"
 	"sync"
 
@@ -20,13 +21,15 @@ func init() {
 	Blacklist.Data = make(map[string]struct{})
 }
 
+var blackViper *viper.Viper
 //监听黑名单文件
 func WatchBlacklist() {
-	v := viper.New()
-	v.AddConfigPath("./")
-	v.SetConfigFile(viper.GetString("blacklist.filePath"))
-	v.OnConfigChange(onBlacklistChange)
-	v.WatchConfig()
+	blackViper = viper.New()
+	blackViper.AddConfigPath("./")
+	masterViper :=conf.GetViper()
+	blackViper.SetConfigFile(masterViper.GetString("blacklist.filePath"))
+	blackViper.OnConfigChange(onBlacklistChange)
+	blackViper.WatchConfig()
 }
 
 func onBlacklistChange(in fsnotify.Event) {
@@ -37,7 +40,7 @@ func onBlacklistChange(in fsnotify.Event) {
 }
 //可以用atomic 替换
 func updateBlacklist() {
-	filePath := viper.GetString("blacklist.filePath")
+	filePath := blackViper.GetString("blacklist.filePath")
 	fp, err := os.Open(filePath)
 	if err != nil {
 		log.Errorf(err.Error())
