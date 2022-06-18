@@ -13,7 +13,7 @@ grpc_connect = "127.0.0.1:8081"
 
 
 [database]
-[database.test]
+[database.default]
 dsn = "root:@tcp(127.0.0.1:3306)/test?parseTime=true&charset=utf8&loc=Asia%2FShanghai"
 max_open_conns = 30
 mac_idle_conns = 10
