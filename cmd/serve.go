@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"context"
-	"crgo/infra/util"
+	"crgo/http/services"
 	"errors"
 	"os"
 	"os/signal"
@@ -46,7 +46,8 @@ func Run() error {
 
 	//更新黑名单 内存
 	go func() {
-		util.WatchBlacklist()
+		blackService :=services.NewBlackService()
+		blackService.WatchBlacklist()
 	}()
 	go func() {
 		<-quit

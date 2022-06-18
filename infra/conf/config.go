@@ -1,6 +1,9 @@
 package conf
 
-import "reflect"
+import (
+	"crgo/infra/util"
+	"github.com/spf13/cast"
+)
 
 // ConfigFunc 动态加载配置信息
 type ConfigFunc func() map[string]interface{}
@@ -8,51 +11,71 @@ type ConfigFunc func() map[string]interface{}
 // ConfigFuncs 先加载到此数组，loadConfig 再动态生成配置信息
 var ConfigFuncs map[string]ConfigFunc
 
-
-
-
-func init(){
+func init() {
 	ConfigFuncs = make(map[string]ConfigFunc)
-
 }
 
-
-
-func loadConfig() {
+func LoadConfig() {
 	for name, fn := range ConfigFuncs {
 		viperObj.Set(name, fn())
 	}
 }
-
-
 
 // Add 新增配置项
 func Add(name string, configFn ConfigFunc) {
 	ConfigFuncs[name] = configFn
 }
 
+// Env 读取配置函数，支持默认值
+func Env(envName string, defaultValue ...interface{}) interface{} {
+	if len(defaultValue) > 0 {
+		return internalGet(envName, defaultValue[0])
+	}
+	return internalGet(envName)
+}
 
-// Empty 类似于 PHP 的 empty() 函数
-func Empty(val interface{}) bool {
-	if val == nil {
-		return true
+func internalGet(key string, defaultValue ...interface{}) interface{} {
+	// config 或者环境变量不存在的情况
+	if !viperObj.IsSet(key) || util.Empty(viperObj.Get(key)) {
+		if len(defaultValue) > 0 {
+			return defaultValue[0]
+		}
+		return nil
 	}
-	v := reflect.ValueOf(val)
-	switch v.Kind() {
-	case reflect.String, reflect.Array:
-		return v.Len() == 0
-	case reflect.Map, reflect.Slice:
-		return v.Len() == 0 || v.IsNil()
-	case reflect.Bool:
-		return !v.Bool()
-	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-		return v.Int() == 0
-	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
-		return v.Uint() == 0
-	case reflect.Float32, reflect.Float64:
-		return v.Float() == 0
-	case reflect.Interface, reflect.Ptr:
-		return v.IsNil()
-	}
-	return reflect.DeepEqual(val, reflect.Zero(v.Type()).Interface())
+	return viperObj.Get(key)
+}
+
+// GetString 获取 String 类型的配置信息
+func GetString(path string, defaultValue ...interface{}) string {
+	return cast.ToString(internalGet(path, defaultValue...))
+}
+
+// GetInt 获取 Int 类型的配置信息
+func GetInt(path string, defaultValue ...interface{}) int {
+	return cast.ToInt(internalGet(path, defaultValue...))
+}
+
+// GetFloat64 获取 float64 类型的配置信息
+func GetFloat64(path string, defaultValue ...interface{}) float64 {
+	return cast.ToFloat64(internalGet(path, defaultValue...))
+}
+
+// GetInt64 获取 Int64 类型的配置信息
+func GetInt64(path string, defaultValue ...interface{}) int64 {
+	return cast.ToInt64(internalGet(path, defaultValue...))
+}
+
+// GetUint 获取 Uint 类型的配置信息
+func GetUint(path string, defaultValue ...interface{}) uint {
+	return cast.ToUint(internalGet(path, defaultValue...))
+}
+
+// GetBool 获取 Bool 类型的配置信息
+func GetBool(path string, defaultValue ...interface{}) bool {
+	return cast.ToBool(internalGet(path, defaultValue...))
+}
+
+// GetStringMapString 获取结构数据
+func GetStringMapString(path string) map[string]string {
+	return viperObj.GetStringMapString(path)
 }

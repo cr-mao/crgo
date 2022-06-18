@@ -1,4 +1,4 @@
-package util
+package services
 
 import (
 	"bufio"
@@ -21,12 +21,23 @@ func init() {
 	Blacklist.Data = make(map[string]struct{})
 }
 
+type BlackService struct {
+}
+
+
+
+func NewBlackService() *BlackService{
+	return &BlackService{}
+}
+
+
 var blackViper *viper.Viper
+
 //监听黑名单文件
-func WatchBlacklist() {
+func (s *BlackService) WatchBlacklist() {
 	blackViper = viper.New()
 	blackViper.AddConfigPath("./")
-	masterViper :=conf.GetViper()
+	masterViper := conf.GetViper()
 	blackViper.SetConfigFile(masterViper.GetString("blacklist.filePath"))
 	blackViper.OnConfigChange(onBlacklistChange)
 	blackViper.WatchConfig()
@@ -38,6 +49,7 @@ func onBlacklistChange(in fsnotify.Event) {
 		updateBlacklist()
 	}
 }
+
 //可以用atomic 替换
 func updateBlacklist() {
 	filePath := blackViper.GetString("blacklist.filePath")

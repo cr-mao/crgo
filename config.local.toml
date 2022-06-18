@@ -1,9 +1,28 @@
+app_name = "crgo"
+app_env = "local"
+debug = true
+jwt_key = "33446a9dcf9ea060a0a6532b166da32f304af0de"
+timezone = "Asia/Shanghai"
+http_addr = "127.0.0.1"
+http_port = 8000
+http_connect = "127.0.0.1:8000"
+grpc_addr =  "127.0.0.1"
+grpc_port =  "8081"
+grpc_connect = "127.0.0.1:8081"
+
+
+
 [database]
 [database.test]
 dsn = "root:@tcp(127.0.0.1:3306)/test?parseTime=true&charset=utf8&loc=Asia%2FShanghai"
 max_open_conns = 30
 mac_idle_conns = 10
+max_life_seconds = 300
 debug = true
+
+
+
+
 
 
 [redis]

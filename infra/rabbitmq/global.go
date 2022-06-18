@@ -1,10 +1,10 @@
 package rabbitmq
 
 import (
+	"crgo/infra/conf"
 	"strings"
 	"sync"
 
-	"github.com/spf13/viper"
 	"github.com/streadway/amqp"
 
 	"crgo/infra/log"
@@ -25,11 +25,12 @@ var once sync.Once
 
 func Init() {
 	once.Do(func() {
+		vip :=conf.GetViper()
 		mapping := make(map[string]*amqp.Connection)
 		dsnMap = make(map[string]string)
 
-		for bind := range viper.GetStringMap(RABBITMQ) {
-			dsn := viper.GetString(strings.Join([]string{RABBITMQ, bind, DSN}, "."))
+		for bind := range vip.GetStringMap(RABBITMQ) {
+			dsn := vip.GetString(strings.Join([]string{RABBITMQ, bind, DSN}, "."))
 			conn, err := amqp.Dial(dsn)
 			if err != nil {
 				panic(err)

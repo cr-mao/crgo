@@ -1,12 +1,12 @@
 package redis
 
 import (
+	"crgo/infra/conf"
 	"strings"
 	"sync"
 
 	goRedis "github.com/go-redis/redis/v8"
 	"github.com/mitchellh/mapstructure"
-	"github.com/spf13/viper"
 
 	"crgo/infra/log"
 )
@@ -25,9 +25,9 @@ var once sync.Once
 func InitRedis() {
 	once.Do(func() {
 		mapping := make(map[string]*goRedis.Client)
-
-		for bind := range viper.GetStringMap(REDIS) {
-			instanceConfig := viper.GetStringMap(strings.Join([]string{REDIS, bind}, "."))
+		vip := conf.GetViper()
+		for bind := range vip.GetStringMap(REDIS) {
+			instanceConfig := vip.GetStringMap(strings.Join([]string{REDIS, bind}, "."))
 
 			var option goRedis.Options
 			err := mapstructure.Decode(instanceConfig, &option)

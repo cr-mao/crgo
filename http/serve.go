@@ -11,7 +11,7 @@ import (
 
 func NewServe() *http.Server {
 	router := routers.NewRouter()
-	addr := conf.Net.HTTP_ADDR + ":" + conf.Net.HTTP_PORT
+	addr := conf.GetString("http_addr") + ":" + conf.GetString("http_port")
 	s := &http.Server{
 		Addr:           addr,
 		Handler:        router,

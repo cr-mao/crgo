@@ -20,7 +20,7 @@ func NewGrpcServe() *grpc.Server {
 }
 
 func NewListen() net.Listener {
-	listenAddress := strings.Join([]string{conf.Net.GRPC_ADDR, conf.Net.GRPC_PORT}, ":")
+	listenAddress := strings.Join([]string{conf.GetString("grpc_addr"), conf.GetString("grpc_port")}, ":")
 
 	lis, err := net.Listen("tcp", listenAddress)
 	if err != nil {
