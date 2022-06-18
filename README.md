@@ -1,8 +1,6 @@
 # my golang 大杂烩
-   随心写....
   - 项目框架的搭建
-  - 集成一些常用工具集
-  - 面试题解题 
+  - 一些练习
   
   
  
@@ -29,7 +27,7 @@ $ go run main.go --help
 
 
 #### 目录说明
-
+- config 应用配置 模仿laravel .env 配置
 - http 基于gin的基础框架的http服务
 - grpc 基于grpc框架的rpc服务
 - infra  基础架构
@@ -37,10 +35,17 @@ $ go run main.go --help
    - log log处理
    - db  初始化mysql
    - redis 初始化redis
+   - rabbitmq 初始化rabbitmq
+   - sql2struct  表转结构体
+   - timer 时间函数
+   - util 工具包
+   - word 字符转换处理
+   - crtcp tcp长连接 (todo)
+   
 - scripts  脚本运行
 - docs     文档说明   
 - build    构建相关
-- module 一些模块实现案例以及面试题 (**和项目没任何关系**)
+- module  (**和项目没任何关系**)
    
 
 
