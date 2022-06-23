@@ -1,13 +1,10 @@
 package cnet
 
-
-
-type Server struct{
-
-	IP string
-	Port int
-	IPVersion string  //ip版本:   tcp4,tcp6,
-	Name string  //服务器名
+type Server struct {
+	IP        string
+	Port      int
+	IPVersion string //ip版本:   tcp4,tcp6,
+	Name      string //服务器名
 
 }
 
@@ -23,10 +20,6 @@ func (s *Server) Serve() {
 	panic("implement me")
 }
 
-
-
-
-func NewServer() *Server{
-
+func NewServer() *Server {
+	return &Server{}
 }
-
