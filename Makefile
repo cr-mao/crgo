@@ -11,15 +11,18 @@ serve:
 	go run -ldflags $(LDFLAGS) main.go serve
 
 
-
 %:
 	@true
 
 ## codegen: proto file generate
 .PHONY: codegen
-codegen:
+codegen: protoc-gen-go
 	sh scripts/codegen.sh
 
+
+.PHONY: protoc-gen-go
+protoc-gen-go:
+	go get github.com/golang/protobuf/protoc-gen-go@v1.3.5
 
 
 .PHONY: tidy

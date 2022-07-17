@@ -38,6 +38,10 @@ func registerGlobalMiddleWare(router *gin.Engine) {
 // RegisterAPIRoutes 注册网页相关路由
 func RegisterAPIRoutes(r *gin.Engine) {
 	// 测试一个 v1 的路由组，我们所有的 v1 版本的路由都将存放到这里
+	r.GET("/health", func(c *gin.Context) {
+		c.String(http.StatusOK, "ok")
+	})
+
 	v1 := r.Group("/v1")
 	{
 		// 注册一个路由

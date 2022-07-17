@@ -9,6 +9,9 @@ http_connect = "127.0.0.1:8000"
 grpc_addr =  "127.0.0.1"
 grpc_port =  "8081"
 grpc_connect = "127.0.0.1:8081"
+consul_addr = "127.0.0.1"
+consul_port = 8500
+consul_on = false
 
 
 

@@ -1,6 +1,5 @@
-#  golang 大杂烩
+#  my golang framework
   - 项目框架的搭建
-  - 一些练习
   
   
  
@@ -15,6 +14,12 @@ $ brew install protobuf
 $ unzip protoc-3.9.2-osx-x86_64.zip
 
 $ go run main.go --help 
+```
+
+
+### consul 本地启动
+```shell script
+sudo consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul -node=n1 -bind=127.0.0.1 -ui -config-dir /etc/consul.d -rejoin -join 127.0.0.1 -client 0.0.0.0
 ```
 
 
@@ -45,7 +50,6 @@ $ go run main.go --help
 - scripts  脚本运行
 - docs     文档说明   
 - build    构建相关
-- module  (**和项目没任何关系**)
    
 
 
