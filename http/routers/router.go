@@ -1,12 +1,16 @@
 package routers
 
 import (
+	"crgo/infra/conf"
+	"github.com/alibaba/sentinel-golang/core/flow"
 	"net/http"
 	"strings"
 
-	"github.com/gin-gonic/gin"
-
 	"crgo/http/middleware"
+	"log"
+
+	sentinel "github.com/alibaba/sentinel-golang/api"
+	"github.com/gin-gonic/gin"
 )
 
 // 404处理
@@ -32,6 +36,7 @@ func registerGlobalMiddleWare(router *gin.Engine) {
 		gin.Logger(),
 		gin.Recovery(),
 		middleware.ErrorHandler(),
+		middleware.RateLimit(),
 	)
 }
 
@@ -55,6 +60,23 @@ func RegisterAPIRoutes(r *gin.Engine) {
 }
 
 func NewRouter() *gin.Engine {
+	// sentinel 配置文件
+	err := sentinel.InitWithConfigFile("sentinel.yaml")
+	if err != nil {
+		log.Fatalf("Unexpected error: %+v", err)
+	}
+	_, err = flow.LoadRules([]*flow.Rule{
+		{
+			Resource:               conf.GetString("sentinel_flow_resource", "request"),
+			Threshold:              conf.GetFloat64("sentinel_flow_Threshold", 5000),
+			TokenCalculateStrategy: flow.Direct,
+			ControlBehavior:        flow.Reject,
+		},
+	})
+	if err != nil {
+		log.Fatalf("Unexpected error: %+v", err)
+	}
+
 	router := gin.New()
 	gin.SetMode("debug")
 	registerGlobalMiddleWare(router)

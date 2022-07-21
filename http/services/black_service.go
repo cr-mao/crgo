@@ -24,12 +24,9 @@ func init() {
 type BlackService struct {
 }
 
-
-
-func NewBlackService() *BlackService{
+func NewBlackService() *BlackService {
 	return &BlackService{}
 }
-
 
 var blackViper *viper.Viper
 

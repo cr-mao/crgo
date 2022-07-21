@@ -14,6 +14,12 @@ consul_port = 8500
 consul_on = false
 
 
+# 流控资源明
+sentinel_flow_resource = "request"
+sentinel_flow_Threshold = 5000            # 每秒限制请求数
+
+
+
 
 [database]
 [database.default]
@@ -22,6 +28,9 @@ max_open_conns = 30
 mac_idle_conns = 10
 max_life_seconds = 300
 debug = true
+
+
+
 
 
 
