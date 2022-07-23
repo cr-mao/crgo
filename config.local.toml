@@ -17,7 +17,7 @@ consul_on = false
 # 流控资源明
 sentinel_flow_resource = "request"
 sentinel_flow_Threshold = 5000            # 每秒限制请求数
-
+sentinel_stat_interval_in_ms = 1000            # 计算间隔 ms数
 
 
 
@@ -28,12 +28,6 @@ max_open_conns = 30
 mac_idle_conns = 10
 max_life_seconds = 300
 debug = true
-
-
-
-
-
-
 
 
 
@@ -49,14 +43,6 @@ db = 1
 password = ""
 
 
-[oss]
-[oss.aliyun]
-endpoint = ""
-access_key_id = ""
-access_key_secret = ""
-bucket = ""
-
-
 [cdn]
 domain = ""
 
@@ -64,7 +50,6 @@ domain = ""
 [rabbitmq]
 [rabbitmq.test]
 dsn = "amqp://guest:guest@127.0.0.1:5672/"
-
 
 
 [blacklist]

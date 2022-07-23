@@ -48,7 +48,6 @@ sudo consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul -node=n1 -bi
    - crtcp tcp长连接 (todo)
    
 - scripts  脚本运行
-- docs     文档说明   
 - build    构建相关
    
 

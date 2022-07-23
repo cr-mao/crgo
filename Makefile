@@ -1,6 +1,6 @@
 VERSION = `git rev-parse --short HEAD`
 BUILDTIME = `date +%FT%T`
-LDFLAGS = "-s -w -X crgo/cmd.Version=$(VERSION) -X crgo/cmd.BuildTime=$(BUILDTIME)"
+LDFLAGS = "-s -w -X crgo/infra.Version=$(VERSION) -X crgo/infra.BuildTime=$(BUILDTIME)"
 
 
 include scripts/make-rules/golang.mk

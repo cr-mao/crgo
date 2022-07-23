@@ -65,12 +65,14 @@ func NewRouter() *gin.Engine {
 	if err != nil {
 		log.Fatalf("Unexpected error: %+v", err)
 	}
+	// 请求频率直接拒绝
 	_, err = flow.LoadRules([]*flow.Rule{
 		{
 			Resource:               conf.GetString("sentinel_flow_resource", "request"),
 			Threshold:              conf.GetFloat64("sentinel_flow_Threshold", 5000),
 			TokenCalculateStrategy: flow.Direct,
 			ControlBehavior:        flow.Reject,
+			StatIntervalInMs:       uint32(conf.GetUint("sentinel_stat_interval_in_ms", 1000)),
 		},
 	})
 	if err != nil {

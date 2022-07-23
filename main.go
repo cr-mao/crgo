@@ -15,6 +15,7 @@ var rootCmd = &cobra.Command{
 }
 
 func init() {
+	//注入版本号，版本时间
 	rootCmd.AddCommand(cmd.WordCmd)
 	rootCmd.AddCommand(cmd.TimeCmd)
 	rootCmd.AddCommand(cmd.SqlCmd)
@@ -24,7 +25,6 @@ func init() {
 }
 
 func main() {
-
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)

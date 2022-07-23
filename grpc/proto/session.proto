@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package session;
+
+option go_package = "biz/session";
+
+
+message Session {
+  int64 version = 1;
+  bool anonymous = 2;
+  int64 userID = 3;
+  string guid = 4; // version = 1
+}
+
