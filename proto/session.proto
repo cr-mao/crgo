@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package session;
+package crgo.gateway;
 
 option go_package = "biz/session";
 

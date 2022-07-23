@@ -1,6 +1,7 @@
 package grpc
 
 import (
+	"crgo/biz/auth"
 	grpcMiddleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"google.golang.org/grpc"
 	"net"
@@ -15,11 +16,10 @@ func NewGrpcServe() *grpc.Server {
 	var grpcOption = []grpc.ServerOption{
 		//grpc 默认不支持 多个函数中间件
 		grpc.UnaryInterceptor(grpcMiddleware.ChainUnaryServer(
-
 			//注入版本 到metadata
 			injectVersionUnaryServerInterceptor(),
-			//
-			AuthUnaryServerInterceptor(),
+			//用户认证处理
+			auth.AuthUnaryServerInterceptor(auth.DefaultAuthFuc),
 		)),
 	}
 

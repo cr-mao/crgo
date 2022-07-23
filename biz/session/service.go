@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/golang/protobuf/proto"
+	"github.com/google/uuid"
 
 	"crgo/infra/redis"
 )
@@ -61,22 +62,19 @@ func (s *Service) IsAnonymous(ctx context.Context, sessionID string) bool {
 	return false
 }
 
-//func (s *Service) GenerateAnonymous(ctx context.Context) string {
-//	newSessionID := uuid.New().String()
-//
-//	b := util.MustMarshal(util.MarshalWrapper(proto.Marshal), &Session{
-//		Version:   VERSION1,
-//		Anonymous: true,
-//	})
-//
-//	err := redis.Client("session").Set(keySession(newSessionID), b, time.Hour).Err()
-//	if err != nil {
-//		panic(err)
-//	}
-//
-//	return newSessionID
-//}
-//
+//匿名 sessionId 生成
+func (s *Service) GenerateAnonymous(ctx context.Context) string {
+	newSessionID := uuid.New().String()
+	b := util.MustMarshal(util.MarshalWrapper(proto.Marshal), &Session{
+		Version:   VERSION1,
+		Anonymous: true,
+	})
+	err := redis.Client("session").Set(ctx, keySession(newSessionID), b, time.Hour).Err()
+	if err != nil {
+		panic(err)
+	}
+	return newSessionID
+}
 
 func (s *Service) Bind(ctx context.Context, sessionID, guid string, userID int64) {
 	err := db.GetDb("default").Create(&model.UserSession{

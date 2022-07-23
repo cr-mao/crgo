@@ -27,13 +27,3 @@ func injectVersionUnaryServerInterceptor() grpc.UnaryServerInterceptor {
 		return handler(ctx, req)
 	}
 }
-
-// auth中间
-func AuthUnaryServerInterceptor() grpc.UnaryServerInterceptor {
-	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
-
-		//if ctx.FromInComming
-
-		return handler(ctx, req)
-	}
-}

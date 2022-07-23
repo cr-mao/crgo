@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package hashtag.gateway;
+
+option go_package = "biz/bootstrap";
+
+//app 启动的时候 调用
+service Bootstrap {
+  rpc Bootstrap(BootstrapRequest) returns (BootstrapResponse);
+}
+
+message BootstrapRequest{
+  string sessionId = 1; // 客户端本地保存该 sessionId，启动时传递过来，拿不到时传空
+}
+
+message BootstrapResponse {
+  int64 errCode = 1;
+  string errMsg = 2;
+  string sessionId = 3;
+  // 只有当客户端请求的 sessionId 仍然有效时，返回值为 false, 返回当前的 sessionID
+  // 第一次启动、客户端被踢出登录、登录过期等情况，返回值均为 true，返回新生成的 sessionID
+  bool isNew = 4;
+  // 是否为审核模式，待审核状态下，登录界面可能展示的不同
+  bool reviewMode = 5;
+}

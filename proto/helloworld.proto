@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package helloworld;
+package crgo.gateway;
 
 option go_package = "biz/helloworld";
 
