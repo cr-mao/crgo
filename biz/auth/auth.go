@@ -74,6 +74,7 @@ func AuthUnaryServerInterceptor(authFunc AuthFunc) grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 		var newCtx context.Context
 		var err error
+		// 不走
 		if srv, ok := info.Server.(ServiceAuthFuncOverride); ok {
 			newCtx, err = srv.AuthFuncOverride(ctx, req, info)
 		} else {

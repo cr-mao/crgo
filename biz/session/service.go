@@ -2,10 +2,10 @@ package session
 
 import (
 	"context"
-	"crgo/grpc/model"
 	"crgo/infra/bizerror"
 	"crgo/infra/db"
 	"crgo/infra/util"
+	"crgo/model"
 	"time"
 
 	"github.com/golang/protobuf/proto"

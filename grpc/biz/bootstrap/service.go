@@ -20,7 +20,7 @@ func NewService(sessionSvc *session.Service) *Service {
 }
 
 func (s *Service) AuthFuncOverride(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo) (context.Context, error) {
-	if info.FullMethod == "/hashtag.gateway.Bootstrap/Bootstrap" {
+	if info.FullMethod == "/crgo.gateway.Bootstrap/Bootstrap" {
 		return auth.AnonymousAuthFunction(ctx, req, info)
 	}
 	return auth.DefaultAuthFuc(ctx, req, info)

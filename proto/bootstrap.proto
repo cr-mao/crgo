@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package hashtag.gateway;
+package crgo.gateway;
 
 option go_package = "biz/bootstrap";
 
