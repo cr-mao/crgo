@@ -35,11 +35,10 @@ func setup404Handler(r *gin.Engine) {
 //全局中间件
 func registerGlobalMiddleWare(router *gin.Engine) {
 	router.Use(
-		gin.Logger(),
-		gin.Recovery(),
-		middleware.ErrorHandler(),
-		middleware.RateLimit(),
-		middleware.MetheusPathCount(),
+		gin.Logger(),                  //默认gin 的日志中间件
+		middleware.ErrorHandler(),     //panic   错误 recover 处理
+		middleware.RateLimit(),        //请求限流
+		middleware.MetheusPathCount(), //请求方法 统计基数 监控
 	)
 }
 
