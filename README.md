@@ -16,14 +16,30 @@ $ unzip protoc-3.9.2-osx-x86_64.zip
 $ go run main.go --help 
 ```
 
-### consul 本地启动
+#### 构建镜像
 
+```
+## 注意项目里面的 一些服务地址 如mysql,redis 要修改成 容器ip ...不然跑不起来的。 
+docker build -t crgo:v1  --build-arg VERSION="$(git rev-parse --short HEAD)",BUILDTIME="$(date +%FT%T)" -f  ./build/crgo/Dockerfile ./ 
+```
+
+#### consul 本地启动
 ```shell script
 sudo consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul -node=n1 -bind=127.0.0.1 -ui -config-dir /etc/consul.d -rejoin -join 127.0.0.1 -client 0.0.0.0
 ```
 
-#### 命令行工具集
+#### prometheus 本地启动
+```text
+docker pull prom/prometheus:v2.20.1
+docker run -d --name prometheus -p 9090:9090 -v /Users/mac/code/crgo/build/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus:v2.20.1
+```
 
+
+
+
+
+
+#### 命令行工具集
 - 单词格式转换
 - 便利的时间工具
 - SQL语句到结构体的转换

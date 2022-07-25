@@ -3,6 +3,8 @@ package routers
 import (
 	"crgo/infra/conf"
 	"github.com/alibaba/sentinel-golang/core/flow"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+
 	"net/http"
 	"strings"
 
@@ -37,6 +39,7 @@ func registerGlobalMiddleWare(router *gin.Engine) {
 		gin.Recovery(),
 		middleware.ErrorHandler(),
 		middleware.RateLimit(),
+		middleware.MetheusPathCount(),
 	)
 }
 
@@ -46,6 +49,7 @@ func RegisterAPIRoutes(r *gin.Engine) {
 	r.GET("/health", func(c *gin.Context) {
 		c.String(http.StatusOK, "ok")
 	})
+	r.GET("/metrics", gin.WrapH(promhttp.Handler()))
 
 	v1 := r.Group("/v1")
 	{
