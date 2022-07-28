@@ -1,14 +1,13 @@
 package cmd
 
 import (
+	"crgo/infra/util"
 	"log"
 	"strconv"
 	"strings"
 	"time"
 
 	"github.com/spf13/cobra"
-
-	"crgo/infra/timer"
 )
 
 var calculateTime string
@@ -37,7 +36,7 @@ var NowTimeCmd = &cobra.Command{
 	Short: "获取当前时间",
 	Long:  "获取当前时间",
 	Run: func(cmd *cobra.Command, args []string) {
-		nowTime := timer.GetNowTime()
+		nowTime := util.GetNowTime()
 		log.Printf("输出结果： %s, %d", nowTime.Format("2006-01-02 15:04:05"), nowTime.Unix())
 	},
 }
@@ -50,7 +49,7 @@ var calculateTimeCmd = &cobra.Command{
 		var currentTimer time.Time
 		var layout = "2006-01-02 15:04:05"
 		if calculateTime == "" {
-			currentTimer = timer.GetNowTime()
+			currentTimer = util.GetNowTime()
 		} else {
 			var err error
 			if !strings.Contains(calculateTime, " ") {
@@ -61,7 +60,7 @@ var calculateTimeCmd = &cobra.Command{
 				t, _ := strconv.Atoi(calculateTime)
 				currentTimer = time.Unix(int64(t), 0)
 			}
-			calculateTime, err := timer.GetCalculateTime(currentTimer, duration)
+			calculateTime, err := util.GetCalculateTime(currentTimer, duration)
 			if err != nil {
 				log.Fatalf("timer.GetCalculateTime err :%v", err)
 			}

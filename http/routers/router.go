@@ -35,7 +35,7 @@ func setup404Handler(r *gin.Engine) {
 func registerGlobalMiddleWare(router *gin.Engine) {
 	router.Use(
 		middleware.Logger(),           //自定义请求响应中间件
-		middleware.ErrorHandler(),     //panic   错误 recover 处理
+		middleware.Recovery(),         //panic   错误 拦截处理
 		middleware.RateLimit(),        //请求限流
 		middleware.MetheusPathCount(), //请求方法 统计基数 监控
 	)
@@ -84,11 +84,9 @@ func NewRouter() *gin.Engine {
 	router := gin.New()
 	//gin.SetMode("debug")
 	gin.SetMode(gin.ReleaseMode)
-
 	registerGlobalMiddleWare(router)
 	setup404Handler(router)
 	RegisterAPIRoutes(router)
-
 	//router.LoadHTMLGlob("http/view/*")
 	////v1 版本的分组
 	//v1 :=router.Group("/v1")
