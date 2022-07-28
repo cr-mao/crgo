@@ -12,7 +12,7 @@ import (
 func NewServe() *http.Server {
 	router := routers.NewRouter()
 
-	addr := conf.GetString("http_addr") + ":" + conf.GetString("http_port")
+	addr := conf.GetString("app.http_addr") + ":" + conf.GetString("app.http_port")
 	s := &http.Server{
 		Addr:           addr,
 		Handler:        router,

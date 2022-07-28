@@ -5,7 +5,7 @@ import (
 	"crgo/infra/bizerror"
 	"crgo/infra/db"
 	"crgo/infra/util"
-	"crgo/model"
+	"crgo/models"
 	"time"
 
 	"github.com/golang/protobuf/proto"
@@ -77,7 +77,7 @@ func (s *Service) GenerateAnonymous(ctx context.Context) string {
 }
 
 func (s *Service) Bind(ctx context.Context, sessionID, guid string, userID int64) {
-	err := db.GetDb("default").Create(&model.UserSession{
+	err := db.GetDb("default").Create(&models.UserSession{
 		SessionId: sessionID,
 		Guid:      guid,
 		UserId:    userID,
@@ -116,7 +116,7 @@ func (s *Service) Get(ctx context.Context, sessionID string) *Session {
 }
 
 func (s *Service) Remove(ctx context.Context, sessionID string) {
-	user_session := &model.UserSession{
+	user_session := &models.UserSession{
 		SessionId: sessionID,
 	}
 	err := db.GetDb("default").Where("session_id = ? ", sessionID).Delete(user_session).Error

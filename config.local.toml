@@ -4,14 +4,19 @@ debug = true
 jwt_key = "33446a9dcf9ea060a0a6532b166da32f304af0de"
 timezone = "Asia/Shanghai"
 http_addr = "127.0.0.1"
-http_port = 8000
-http_connect = "127.0.0.1:8000"
+http_port = 8001
+http_connect = "127.0.0.1:8001"
 grpc_addr =  "127.0.0.1"
 grpc_port =  "8081"
 grpc_connect = "127.0.0.1:8081"
 consul_addr = "127.0.0.1"
 consul_port = 8500
 consul_on = false
+
+
+# 日志
+LOG_TYPE = "daily"
+LOG_LEVEL= "debug"
 
 
 # 流控资源明

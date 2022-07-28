@@ -23,7 +23,6 @@ func InitDB() {
 	once.Do(func() {
 		vip := conf.GetViper()
 
-
 		m := make(map[string]*gorm.DB)
 		for bind, _ := range vip.GetStringMap("database") {
 			instanceConf := vip.Sub("database." + bind)

@@ -1,18 +1,18 @@
 package routers
 
 import (
-	"crgo/infra/conf"
-	"github.com/alibaba/sentinel-golang/core/flow"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
-
+	"crgo/http/controllers/api/v1/auth"
+	"log"
 	"net/http"
 	"strings"
 
-	"crgo/http/middleware"
-	"log"
-
 	sentinel "github.com/alibaba/sentinel-golang/api"
+	"github.com/alibaba/sentinel-golang/core/flow"
 	"github.com/gin-gonic/gin"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+
+	"crgo/http/middleware"
+	"crgo/infra/conf"
 )
 
 // 404处理
@@ -24,9 +24,8 @@ func setup404Handler(r *gin.Engine) {
 			c.String(http.StatusNotFound, "404 页面不存在")
 		} else {
 			c.JSON(http.StatusNotFound, gin.H{
-				"code": 40401,
-				"msg":  "请求路由不存在",
-				"data": "",
+				"error_code":    404,
+				"error_message": "路由未定义，请确认 url 和请求方法是否正确。",
 			})
 		}
 	})
@@ -44,21 +43,21 @@ func registerGlobalMiddleWare(router *gin.Engine) {
 
 // RegisterAPIRoutes 注册网页相关路由
 func RegisterAPIRoutes(r *gin.Engine) {
-	// 测试一个 v1 的路由组，我们所有的 v1 版本的路由都将存放到这里
+
+	//consul 监控检测用
 	r.GET("/health", func(c *gin.Context) {
 		c.String(http.StatusOK, "ok")
 	})
+
+	// prom 用
 	r.GET("/metrics", gin.WrapH(promhttp.Handler()))
 
+	// 测试一个 v1 的路由组，我们所有的 v1 版本的路由都将存放到这里
 	v1 := r.Group("/v1")
 	{
-		// 注册一个路由
-		v1.GET("/", func(c *gin.Context) {
-			// 以 JSON 格式响应
-			c.JSON(http.StatusOK, gin.H{
-				"Hello": "World!",
-			})
-		})
+		authGroup := v1.Group("/auth")
+		signController := new(auth.SignupController)
+		authGroup.POST("/signup/phone/exist", signController.IsPhoneExist)
 	}
 }
 
@@ -101,17 +100,6 @@ func NewRouter() *gin.Engine {
 	//	adminLoginRoute :=v1.Group("/admin_login")
 	//	controller.AdminRegisterRegister(adminLoginRoute)
 	//}
-
-	//
-	//{
-	//	authRouter :=router.Group("/").Use(Auth())
-	//	authRouter.GET("/", func(context *gin.Context) {
-	//		context.String(http.StatusOK, "hello gin")
-	//	})
-	//}
-
-	//router.GET("/gorm_test", func(context *gin.Context) {
-	//})
 
 	return router
 

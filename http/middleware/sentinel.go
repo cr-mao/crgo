@@ -21,6 +21,7 @@ func RateLimit() gin.HandlerFunc {
 				"msg":     b.Error(),
 				"payload": "",
 			})
+			return
 		} else {
 			//停止，重新开始计算
 			e.Exit()

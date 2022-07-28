@@ -1,9 +1,10 @@
-package model
+package models
 
 import (
 	"time"
 )
 
+//用户session表
 type UserSession struct {
 	SessionId string    `gorm:"primary_key;column:session_id"`
 	Guid      string    `gorm:"column:guid"`

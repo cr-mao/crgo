@@ -1,4 +1,4 @@
-package model
+package models
 
 type AppSettings struct {
 	BundleID      string `gorm:"primary_key;column:bundle_id"`

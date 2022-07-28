@@ -1,10 +1,11 @@
 package conf
 
 import (
-	"github.com/spf13/viper"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/spf13/viper"
 )
 
 func IsDev() bool {
@@ -74,7 +75,6 @@ func fromEnv() {
 }
 
 func fromConfigFile() {
-
 	if !IsDev() {
 		configName = "config.local"
 	}
@@ -90,6 +90,9 @@ func fromConfigFile() {
 			panic(err)
 		}
 	}
+
+	// 监控 .env 文件，变更时重新加载
+	viperObj.WatchConfig()
 }
 
 func init() {
@@ -112,7 +115,3 @@ func InitConfig() {
 func GetViper() *viper.Viper {
 	return viperObj
 }
-
-
-
-

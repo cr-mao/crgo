@@ -16,6 +16,7 @@ func init() {
 	prometheus.MustRegister(mycounter)
 }
 
+//统计 方法的 请求数 到监控 prometheus
 func MetheusPathCount() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		mycounter.With(prometheus.Labels{
