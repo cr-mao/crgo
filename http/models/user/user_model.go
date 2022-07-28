@@ -13,3 +13,7 @@ type User struct {
 
 	models.CommonTimestampsField
 }
+
+func (User) TableName() string {
+	return "users"
+}

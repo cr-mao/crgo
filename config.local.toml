@@ -1,6 +1,6 @@
 app_name = "crgo"
 app_env = "local"
-debug = true
+debug = false
 jwt_key = "33446a9dcf9ea060a0a6532b166da32f304af0de"
 timezone = "Asia/Shanghai"
 http_addr = "127.0.0.1"
@@ -32,7 +32,7 @@ dsn = "root:@tcp(127.0.0.1:3306)/test?parseTime=true&charset=utf8&loc=Asia%2FSha
 max_open_conns = 30
 mac_idle_conns = 10
 max_life_seconds = 300
-debug = true
+debug = false
 
 
 

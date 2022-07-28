@@ -3,10 +3,8 @@ package auth
 import (
 	v1 "crgo/http/controllers/api/v1"
 	"crgo/http/models/user"
-	"encoding/json"
-	"fmt"
+	"crgo/http/requests"
 	"github.com/gin-gonic/gin"
-	"github.com/thedevsaddam/govalidator"
 	"net/http"
 )
 
@@ -20,30 +18,8 @@ type PhoneExistRequest struct {
 }
 
 func (sc *SignupController) IsPhoneExist(c *gin.Context) {
-	request := PhoneExistRequest{}
-
-	rules := govalidator.MapData{
-		"username": []string{"required", "between:3,5"},
-		"email":    []string{"required", "min:4", "max:20", "email"},
-		"web":      []string{"url"},
-	}
-
-	opts := govalidator.Options{
-		Data:  &request,
-		Rules: rules,
-	}
-
-	v := govalidator.New(opts)
-	e := v.ValidateStruct()
-	if len(e) > 0 {
-		data, _ := json.MarshalIndent(e, "", "  ")
-		fmt.Println(string(data))
-	}
-
-	if err := c.ShouldBindJSON(&request); err != nil {
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
-			"error": err.Error(),
-		})
+	request := requests.SignupPhoneExistRequest{}
+	if ok := requests.Validate(c, &request, requests.SignupPhoneExist); !ok {
 		return
 	}
 	//  检查数据库并返回响应

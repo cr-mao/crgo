@@ -2,12 +2,14 @@ package middleware
 
 import (
 	"bytes"
-	"crgo/infra/log"
-	"crgo/infra/util"
-	"github.com/gin-gonic/gin"
-	"github.com/spf13/cast"
 	"io/ioutil"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/spf13/cast"
+
+	"crgo/infra/log"
+	"crgo/infra/util"
 )
 
 type responseBodyWriter struct {
@@ -55,7 +57,6 @@ func Logger() gin.HandlerFunc {
 			// 响应的内容
 			logField["ResponseBody"] = w.body.String()
 		}
-
 		if responStatus > 400 && responStatus <= 499 {
 			// 除了 StatusBadRequest 以外，warning 提示一下，常见的有 403 404，开发时都要注意
 			log.Warn("HTTP Warning "+cast.ToString(responStatus), logField)
