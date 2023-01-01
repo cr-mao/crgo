@@ -2,6 +2,7 @@ package routers
 
 import (
 	"crgo/http/controllers/api/v1/auth"
+	"crgo/http/controllers/api/v1/user"
 	"log"
 	"net/http"
 	"strings"
@@ -58,7 +59,12 @@ func RegisterAPIRoutes(r *gin.Engine) {
 		authGroup := v1.Group("/auth")
 		signController := new(auth.SignupController)
 		authGroup.POST("/signup/phone/exist", signController.IsPhoneExist)
+
+		//用户api
+		userController := &user.UserController{}
+		v1.GET("/user_list", userController.GetUserList)
 	}
+
 }
 
 func NewRouter() *gin.Engine {
@@ -82,8 +88,8 @@ func NewRouter() *gin.Engine {
 	}
 
 	router := gin.New()
-	//gin.SetMode("debug")
-	gin.SetMode(gin.ReleaseMode)
+	gin.SetMode("debug")
+	//gin.SetMode(gin.ReleaseMode)
 	registerGlobalMiddleWare(router)
 	setup404Handler(router)
 	RegisterAPIRoutes(router)

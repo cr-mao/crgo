@@ -19,7 +19,7 @@ func SayHello(client helloworld.GreeterClient) error {
 }
 
 func Do() error {
-	conn, err := grpc.Dial(":8001", grpc.WithInsecure())
+	conn, err := grpc.Dial(":8081", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("client conn err :%v", err)
 		return err

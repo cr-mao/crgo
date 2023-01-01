@@ -28,7 +28,7 @@ sentinel_stat_interval_in_ms = 1000            # 计算间隔 ms数
 
 [database]
 [database.default]
-dsn = "root:@tcp(127.0.0.1:3306)/test?parseTime=true&charset=utf8&loc=Asia%2FShanghai"
+dsn = "root:root@tcp(127.0.0.1:3306)/test?parseTime=true&charset=utf8mb4&loc=Asia%2FShanghai"
 max_open_conns = 30
 mac_idle_conns = 10
 max_life_seconds = 300

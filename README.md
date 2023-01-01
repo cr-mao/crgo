@@ -7,11 +7,16 @@
 ```shell 
 $ export GO111MODULE=on
 $ go mod download
-$ go get github.com/golang/protobuf/protoc-gen-go@v1.3.5
-$ brew install protobuf
+
+
+#$ go get github.com/golang/protobuf/protoc-gen-go@v1.3.5
+#$ brew install protobuf
 
 ## Or Download https://github.com/protocolbuffers/protobuf/releases/download/v3.9.2/protoc-3.9.2-osx-x86_64.zip
-$ unzip protoc-3.9.2-osx-x86_64.zip
+#$ unzip protoc-3.9.2-osx-x86_64.zip
+
+
+# www.crblog.cc/posts/go/grpc-protobuf-action  参见这篇文章 安装新的proto相关工具
 
 $ go run main.go --help 
 ```

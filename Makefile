@@ -16,13 +16,13 @@ serve:
 
 ## codegen: proto file generate
 .PHONY: codegen
-codegen: protoc-gen-go
+codegen:
 	sh scripts/codegen.sh
 
 
-.PHONY: protoc-gen-go
-protoc-gen-go:
-	go get github.com/golang/protobuf/protoc-gen-go@v1.3.5
+#.PHONY: protoc-gen-go
+#protoc-gen-go:
+#	go install github.com/golang/protobuf/protoc-gen-go@v1.3.5
 
 
 .PHONY: tidy

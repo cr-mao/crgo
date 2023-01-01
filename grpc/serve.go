@@ -3,6 +3,7 @@ package grpc
 import (
 	"crgo/biz/auth"
 	"crgo/biz/session"
+	"crgo/biz/user"
 	"crgo/grpc/biz/bootstrap"
 	grpcMiddleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"google.golang.org/grpc"
@@ -33,6 +34,7 @@ func NewGrpcServe() *grpc.Server {
 func registerService(s *grpc.Server) {
 	helloworld.RegisterGreeterServer(s, &helloworld.Binding{})
 	bootstrap.RegisterBootstrapServer(s, bootstrap.NewService(session.NewService()))
+	user.RegisterUserServer(s, user.NewUserService())
 }
 
 func NewListen() net.Listener {

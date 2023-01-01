@@ -13,6 +13,7 @@ import (
 
 type Service struct {
 	SessionSvc *session.Service
+	UnimplementedBootstrapServer
 }
 
 func NewService(sessionSvc *session.Service) *Service {

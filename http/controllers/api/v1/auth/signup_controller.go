@@ -1,7 +1,6 @@
 package auth
 
 import (
-	v1 "crgo/http/controllers/api/v1"
 	"crgo/http/models/user"
 	"crgo/http/requests"
 	"github.com/gin-gonic/gin"
@@ -9,7 +8,6 @@ import (
 )
 
 type SignupController struct {
-	v1.BaseAPIController
 }
 
 // 请求对象

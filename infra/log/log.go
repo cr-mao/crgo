@@ -39,6 +39,8 @@ func InitLogger() {
 	}
 	log.Println("Log init")
 
+	//zap.ReplaceGlobals(logger)
+
 	sugarLogger := logger.Sugar()
 	Debug = sugarLogger.Debug
 	Debugf = sugarLogger.Debugf

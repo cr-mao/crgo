@@ -34,7 +34,7 @@ func InitRedis() {
 			if err != nil {
 				panic(err)
 			}
-			log.Debugf("preparing Redis redis.Client -> %s @ %s", bind, option.Addr)
+			log.Debugf("preparing Redis redis.Client -> %s @ %s:%d", bind, option.Addr, option.DB)
 			mapping[bind] = goRedis.NewClient(&option)
 		}
 
