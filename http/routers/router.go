@@ -39,6 +39,7 @@ func registerGlobalMiddleWare(router *gin.Engine) {
 		middleware.Recovery(),         //panic   错误 拦截处理
 		middleware.RateLimit(),        //请求限流
 		middleware.MetheusPathCount(), //请求方法 统计基数 监控
+		middleware.Cors(),             //跨域请求支持 .
 	)
 }
 
@@ -62,7 +63,10 @@ func RegisterAPIRoutes(r *gin.Engine) {
 
 		//用户api
 		userController := &user.UserController{}
-		v1.GET("/user_list", userController.GetUserList)
+		v1.POST("/login", userController.Login)
+
+		authRoute := v1.Use(middleware.JWTAuth())
+		authRoute.GET("/user_list", userController.GetUserList)
 	}
 
 }
