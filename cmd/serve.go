@@ -2,19 +2,22 @@ package cmd
 
 import (
 	"context"
-	"crgo/infra/conf"
-	"crgo/infra/discovery"
 	"errors"
-	"github.com/google/uuid"
+	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/spf13/cobra"
+	googleGrpc "google.golang.org/grpc"
 
 	"crgo/grpc"
 	"crgo/http"
+	"crgo/http/global"
+	"crgo/infra/conf"
+	"crgo/infra/discovery"
 	"crgo/infra/log"
 )
 
@@ -74,6 +77,25 @@ func Run(ctx context.Context) error {
 		log.Fatalf("register service err : %s", err)
 	}
 
+	// http 服务 服务发现grpc 服务
+	//全局 服务初始化，初始化链接srv grpc conn。
+	instanceInfos, err := consulClient.DiscoverServices(ctx, "grpcserve")
+
+	if err != nil {
+		log.Fatalf("grpc DiscoverServices error: %v", err)
+	}
+	userSrvHost := ""
+	userSrvPort := 0
+	for _, instanceInfo := range instanceInfos {
+		userSrvHost = instanceInfo.Address
+		userSrvPort = instanceInfo.Port
+		break
+	}
+	log.Debugf("grpc 服务发现 address %s:%d", userSrvHost, userSrvPort)
+	global.GrpcConnect, err = googleGrpc.Dial(fmt.Sprintf("%s:%d", userSrvHost, userSrvPort), googleGrpc.WithInsecure())
+	if err != nil {
+		log.Errorf("client conn err :%v", err)
+	}
 	var stopped bool
 	for i := 0; i < cap(errChan); i++ {
 		if err := <-errChan; err != nil {

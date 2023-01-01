@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"google.golang.org/grpc"
 	"time"
 
 	protoUser "crgo/biz/user"
@@ -72,13 +71,7 @@ func (cc *UserController) Login(c *gin.Context) {
 
 //获得用户列表
 func (cc *UserController) GetUserList(c *gin.Context) {
-	conn, err := grpc.Dial("127.0.0.1:8081", grpc.WithInsecure())
-	if err != nil {
-		log.Errorf("client conn err :%v", err)
-	}
-	defer conn.Close()
-
-	client := protoUser.NewUserClient(conn)
+	client := protoUser.NewUserClient(global.GrpcConnect)
 	userResponse, err := client.GetUserList(context.Background(), &protoUser.PageInfo{
 		Pn:    0,
 		PSize: 20,
