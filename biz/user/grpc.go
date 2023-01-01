@@ -2,7 +2,6 @@ package user
 
 import (
 	"context"
-	"fmt"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
@@ -22,9 +21,22 @@ func NewUserService() *UserService {
 //rpc CheckPassWord (PasswordCheckInfo) returns (CheckResponse); //检查密码
 
 func (s *UserService) GetUserList(ctx context.Context, in *PageInfo) (*UserListResonse, error) {
-	fmt.Println(in.Pn)
-	fmt.Println(in.PSize)
-	return &UserListResonse{}, nil
+	//fmt.Println(in.Pn)
+	//fmt.Println(in.PSize)
+
+	return &UserListResonse{
+		Total: 1,
+		Data: []*UserInfoResponse{
+			{
+				Id:       1,
+				Mobile:   "18758327xxx",
+				NickName: "crmao",
+				BirthDay: 1672567345,
+				Gender:   "male",
+				Role:     0,
+			},
+		},
+	}, nil
 }
 
 func (s *UserService) GetUserByMobile(ctx context.Context, in *MobileRequest) (*UserInfoResponse, error) {
