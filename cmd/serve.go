@@ -42,31 +42,37 @@ func Run(ctx context.Context) error {
 		errChan <- HttpServe(ctx, stopChan)
 	}()
 
-
 	go func() {
 		errChan <- GrpcServe(stopChan)
 	}()
+
 	//更新黑名单 内存
 	//go func() {
 	//	blackService :=services.NewBlackService()
 	//	blackService.WatchBlacklist()
 	//}()
+
 	go func() {
 		<-quit
 		errChan <- errors.New("手动关闭")
 	}()
 
+	//http 服务注册
 	var consulClient *discovery.DiscoveryClient
 	var instanceId string
-	if conf.GetBool("consul_on",false ) {
-		consulClient = discovery.NewDiscoveryClient(conf.GetString("consul_addr"), conf.GetInt("consul_port"))
-		instanceId = "httpserve:"+ "-" + uuid.New().String()
-		err := consulClient.Register(ctx, "httpserve", instanceId, "/health", conf.GetString("http_addr"), conf.GetInt("http_port"), nil, nil)
-		if err != nil{
-			log.Fatalf("register service err : %s", err)
-		}
+	consulClient = discovery.NewDiscoveryClient(conf.GetString("consul_addr"), conf.GetInt("consul_port"))
+	instanceId = "httpserve:" + "-" + uuid.New().String()
+	err := consulClient.Register(ctx, 0, "httpserve", instanceId, "/health", conf.GetString("http_addr"), conf.GetInt("http_port"), nil, nil)
+	if err != nil {
+		log.Fatalf("register service err : %s", err)
 	}
 
+	//grpc 服务注册
+	instanceId = "grpcserve:" + "-" + uuid.New().String()
+	err = consulClient.Register(ctx, 1, "grpcserve", instanceId, "", conf.GetString("grpc_addr"), conf.GetInt("grpc_port"), nil, nil)
+	if err != nil {
+		log.Fatalf("register service err : %s", err)
+	}
 
 	var stopped bool
 	for i := 0; i < cap(errChan); i++ {
@@ -79,11 +85,7 @@ func Run(ctx context.Context) error {
 			close(stopChan)
 		}
 	}
-	if conf.GetBool("consul_on",false ) {
-		consulClient.Deregister(ctx, instanceId)
-	}
-
-	return nil
+	return consulClient.Deregister(ctx, instanceId)
 }
 
 func HttpServe(ctx context.Context, stop <-chan struct{}) error {

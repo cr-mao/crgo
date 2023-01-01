@@ -7,6 +7,8 @@ import (
 	"crgo/grpc/biz/bootstrap"
 	grpcMiddleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/health"
+	"google.golang.org/grpc/health/grpc_health_v1"
 	"net"
 	"strings"
 
@@ -28,6 +30,11 @@ func NewGrpcServe() *grpc.Server {
 
 	s := grpc.NewServer(grpcOption...)
 	registerService(s)
+
+	//注册服务健康检查
+	// https://github.com/grpc/grpc/blob/master/doc/health-checking.md
+	grpc_health_v1.RegisterHealthServer(s, health.NewServer())
+
 	return s
 }
 

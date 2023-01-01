@@ -30,6 +30,8 @@ docker build -t crgo:v1  --build-arg VERSION="$(git rev-parse --short HEAD)",BUI
 
 #### consul 本地启动
 ```shell script
+# https://developer.hashicorp.com/consul/downloads 
+# sudo mkdir -p /etc/consul.d
 sudo consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul -node=n1 -bind=127.0.0.1 -ui -config-dir /etc/consul.d -rejoin -join 127.0.0.1 -client 0.0.0.0
 ```
 

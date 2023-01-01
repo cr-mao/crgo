@@ -31,6 +31,7 @@ type Check struct {
 	HTTP                           string   `json:"HTTP"`                           // 健康检查地址
 	Interval                       string   `json:"Interval,omitempty"`             // Consul 主动检查间隔
 	TTL                            string   `json:"TTL,omitempty"`                  // 服务实例主动维持心跳间隔，与Interval只存其一
+	GRPC                           string   `json:"GRPC,omitempty"`                 // grpc 健康检测
 }
 
 type Weights struct {
@@ -50,20 +51,39 @@ func NewDiscoveryClient(host string, port int) *DiscoveryClient {
 	}
 }
 
-func (consulClient *DiscoveryClient) Register(ctx context.Context, serviceName, instanceId, healthCheckUrl string, instanceHost string, instancePort int, meta map[string]string, weights *Weights) error {
+// https://github.com/hashicorp/consul/tree/main/api
 
-	instanceInfo := &InstanceInfo{
-		ID:                instanceId,
-		Name:              serviceName,
-		Address:           instanceHost,
-		Port:              instancePort,
-		Meta:              meta,
-		EnableTagOverride: false,
-		Check: Check{
-			DeregisterCriticalServiceAfter: "30s",
-			HTTP:                           "http://" + instanceHost + ":" + strconv.Itoa(instancePort) + healthCheckUrl,
-			Interval:                       "15s",
-		},
+// serveType http 0 , grpc=1
+func (consulClient *DiscoveryClient) Register(ctx context.Context, serveType int64, serviceName, instanceId, healthCheckUrl string, instanceHost string, instancePort int, meta map[string]string, weights *Weights) error {
+	var instanceInfo *InstanceInfo
+	if serveType == 1 {
+		instanceInfo = &InstanceInfo{
+			ID:                instanceId,
+			Name:              serviceName,
+			Address:           instanceHost,
+			Port:              instancePort,
+			Meta:              meta,
+			EnableTagOverride: false,
+			Check: Check{
+				DeregisterCriticalServiceAfter: "30s",
+				GRPC:                           "" + instanceHost + ":" + strconv.Itoa(instancePort),
+				Interval:                       "15s",
+			},
+		}
+	} else {
+		instanceInfo = &InstanceInfo{
+			ID:                instanceId,
+			Name:              serviceName,
+			Address:           instanceHost,
+			Port:              instancePort,
+			Meta:              meta,
+			EnableTagOverride: false,
+			Check: Check{
+				DeregisterCriticalServiceAfter: "30s",
+				HTTP:                           "http://" + instanceHost + ":" + strconv.Itoa(instancePort) + healthCheckUrl,
+				Interval:                       "15s",
+			},
+		}
 	}
 
 	if weights != nil {
