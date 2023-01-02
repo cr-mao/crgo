@@ -10,10 +10,9 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	_ "github.com/mbobakov/grpc-consul-resolver"
 	"github.com/spf13/cobra"
 	googleGrpc "google.golang.org/grpc"
-
-	_ "github.com/mbobakov/grpc-consul-resolver"
 
 	"crgo/grpc"
 	"crgo/http"
@@ -99,6 +98,8 @@ func Run(ctx context.Context) error {
 
 	//http 服务注册
 	var consulClient *discovery.DiscoveryClient
+
+	// instanceId 不同实列 要不同
 	var instanceId string
 	consulClient = discovery.NewDiscoveryClient(conf.GetString("consul_addr"), conf.GetInt("consul_port"))
 	instanceId = "httpserve:" + "-" + uuid.New().String()
@@ -108,14 +109,16 @@ func Run(ctx context.Context) error {
 	}
 
 	//grpc 服务注册
+
 	instanceId = "grpcserve:" + "-" + uuid.New().String()
 	err = consulClient.Register(ctx, 1, "grpcserve", instanceId, "", conf.GetString("grpc_addr"), conf.GetInt("grpc_port"), nil, nil)
 	if err != nil {
 		log.Fatalf("register service err : %s", err)
 	}
-
 	// http 服务 服务发现grpc 服务,初始化全局链接
 	GrpcConnect()
+
+	//取nacos 配置， 只是为了写这个功能而已。 其实没用
 
 	var stopped bool
 	for i := 0; i < cap(errChan); i++ {

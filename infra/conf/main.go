@@ -1,6 +1,7 @@
 package conf
 
 import (
+	"github.com/mitchellh/mapstructure"
 	"log"
 	"os"
 	"strings"
@@ -34,6 +35,18 @@ var (
 	viperObj   *viper.Viper
 )
 
+type NacosConfig struct {
+	Host      string `mapstructure:"host"`
+	Port      uint64 `mapstructure:"port"`
+	Namespace string `mapstructure:"namespace"`
+	User      string `mapstructure:"user"`
+	Password  string `mapstructure:"password"`
+	DataId    string `mapstructure:"dataid"`
+	Group     string `mapstructure:"group"`
+}
+
+var NacCosConfigOption NacosConfig
+
 //type networkOption struct {
 //	HTTP_ADDR    string
 //	HTTP_PORT    string
@@ -61,6 +74,15 @@ var (
 //	}
 //	log.Printf("network config is %#v\n", Net)
 //}
+
+//解析nacos配置
+func setNacos() {
+	instanceConfig := viperObj.GetStringMap("nacos")
+	err := mapstructure.Decode(instanceConfig, &NacCosConfigOption)
+	if err != nil {
+		panic(err)
+	}
+}
 
 func fromEnv() {
 	// viper.SetEnvPrefix("cr")
@@ -97,7 +119,7 @@ func fromConfigFile() {
 
 func init() {
 	OnInitialize(fromEnv, fromConfigFile)
-	//AfterInit(setNetworkOption)
+	AfterInit(setNacos)
 }
 
 func InitConfig() {

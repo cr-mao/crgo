@@ -59,3 +59,15 @@ dsn = "amqp://guest:guest@127.0.0.1:5672/"
 
 [blacklist]
     filePath = "./blacklist.txt"
+
+
+[nacos]
+host = "127.0.0.1"
+port = 8848
+namespace = "ec07520d-8a11-4981-9748-ef344d751cb8"
+user = "nacos"
+password = "nacos"
+dataid = "user-web"
+group = "dev"
+
+

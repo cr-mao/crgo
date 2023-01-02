@@ -32,7 +32,9 @@ func InitDB() {
 			maxLifeTime := instanceConf.GetInt("max_life_seconds")
 			debug := instanceConf.GetBool("debug")
 			log.Debugf("preparing MySQL gorm.Connection -> %s @ %s", bind, dsn)
+
 			db, err := gorm.Open("mysql", dsn)
+
 			if err != nil {
 				panic("parse MySQL DSN failed!" + err.Error())
 			}
