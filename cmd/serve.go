@@ -13,6 +13,8 @@ import (
 	"github.com/spf13/cobra"
 	googleGrpc "google.golang.org/grpc"
 
+	_ "github.com/mbobakov/grpc-consul-resolver"
+
 	"crgo/grpc"
 	"crgo/http"
 	"crgo/http/global"
@@ -33,6 +35,41 @@ var ServeCmd = &cobra.Command{
 			log.Error(err)
 		}
 	},
+}
+
+// 服务发现负载均衡
+func GrpcConnect() {
+	userConn, err := googleGrpc.Dial(
+		fmt.Sprintf("consul://%s:%d/%s?wait=14s", conf.GetString("consul_addr"), conf.GetInt("consul_port"), "grpcserve"),
+		googleGrpc.WithInsecure(),
+		googleGrpc.WithDefaultServiceConfig(`{"loadBalancingPolicy": "round_robin"}`),
+	)
+	if err != nil {
+		log.Fatalf("grpc DiscoverServices error: %v", err)
+	}
+	global.GrpcConnect = userConn
+}
+
+// http 服务 服务发现grpc 服务,初始化全局链接
+func GrpcConnect2(ctx context.Context, consulClient *discovery.DiscoveryClient) {
+	//全局 服务初始化，初始化链接srv grpc conn。
+	instanceInfos, err := consulClient.DiscoverServices(ctx, "grpcserve")
+
+	if err != nil {
+		log.Fatalf("grpc DiscoverServices error: %v", err)
+	}
+	userSrvHost := ""
+	userSrvPort := 0
+	for _, instanceInfo := range instanceInfos {
+		userSrvHost = instanceInfo.Address
+		userSrvPort = instanceInfo.Port
+		break
+	}
+	log.Debugf("grpc 服务发现 address %s:%d", userSrvHost, userSrvPort)
+	global.GrpcConnect, err = googleGrpc.Dial(fmt.Sprintf("%s:%d", userSrvHost, userSrvPort), googleGrpc.WithInsecure())
+	if err != nil {
+		log.Errorf("client conn err :%v", err)
+	}
 }
 
 //http , grpc服务一起启动
@@ -77,25 +114,9 @@ func Run(ctx context.Context) error {
 		log.Fatalf("register service err : %s", err)
 	}
 
-	// http 服务 服务发现grpc 服务
-	//全局 服务初始化，初始化链接srv grpc conn。
-	instanceInfos, err := consulClient.DiscoverServices(ctx, "grpcserve")
+	// http 服务 服务发现grpc 服务,初始化全局链接
+	GrpcConnect()
 
-	if err != nil {
-		log.Fatalf("grpc DiscoverServices error: %v", err)
-	}
-	userSrvHost := ""
-	userSrvPort := 0
-	for _, instanceInfo := range instanceInfos {
-		userSrvHost = instanceInfo.Address
-		userSrvPort = instanceInfo.Port
-		break
-	}
-	log.Debugf("grpc 服务发现 address %s:%d", userSrvHost, userSrvPort)
-	global.GrpcConnect, err = googleGrpc.Dial(fmt.Sprintf("%s:%d", userSrvHost, userSrvPort), googleGrpc.WithInsecure())
-	if err != nil {
-		log.Errorf("client conn err :%v", err)
-	}
 	var stopped bool
 	for i := 0; i < cap(errChan); i++ {
 		if err := <-errChan; err != nil {
