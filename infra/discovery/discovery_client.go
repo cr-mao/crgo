@@ -13,16 +13,16 @@ import (
 
 // 服务实例结构体
 type InstanceInfo struct {
-	ID                string            `json:"ID"`                // 服务实例ID
-	Service           string            `json:"Service,omitempty"` // 服务发现时返回的服务名
-	Name              string            `json:"Name"`              // 服务名
-	Tags              []string          `json:"Tags,omitempty"`    // 标签，可用于进行服务过滤
-	Address           string            `json:"Address"`           // 服务实例HOST
-	Port              int               `json:"Port"`              // 服务实例端口
-	Meta              map[string]string `json:"Meta,omitempty"`    // 元数据
-	EnableTagOverride bool              `json:"EnableTagOverride"` // 是否允许标签覆盖
-	Check             `json:"Check,omitempty"`                     // 健康检查相关配置
-	Weights           `json:"Weights,omitempty"`                   // 权重
+	ID                string                     `json:"ID"`                // 服务实例ID
+	Service           string                     `json:"Service,omitempty"` // 服务发现时返回的服务名
+	Name              string                     `json:"Name"`              // 服务名
+	Tags              []string                   `json:"Tags,omitempty"`    // 标签，可用于进行服务过滤
+	Address           string                     `json:"Address"`           // 服务实例HOST
+	Port              int                        `json:"Port"`              // 服务实例端口
+	Meta              map[string]string          `json:"Meta,omitempty"`    // 元数据
+	EnableTagOverride bool                       `json:"EnableTagOverride"` // 是否允许标签覆盖
+	Check             `json:"Check,omitempty"`   // 健康检查相关配置
+	Weights           `json:"Weights,omitempty"` // 权重
 }
 
 type Check struct {
@@ -126,7 +126,7 @@ func (consulClient *DiscoveryClient) Register(ctx context.Context, serveType int
 		return fmt.Errorf("register service http request errCode : %v", resp.StatusCode)
 	}
 
-	log.Println("register service success")
+	log.Printf("register service %s success \n", serviceName)
 	return nil
 }
 

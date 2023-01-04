@@ -53,7 +53,7 @@ docker run -d --name prometheus -p 9090:9090 -v /Users/mac/code/crgo/build/prome
 
 #### 目录说明
 
-- biz 客户端 grpc,http公共处理部分 如请求，会话，认证
+- biz 客户端 grpc,http公共处理部分 如请求，会话，认证, http,grpc一些要共用pb.go文件的也房子啊这里
 - build 构建相关
 - cmd 命令行，初始化工作
 - config 应用配置 模仿laravel .env 配置

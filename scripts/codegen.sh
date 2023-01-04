@@ -26,5 +26,12 @@ protoc --go_out=$absoulte_path/biz/user --go_opt=paths=source_relative \
 
 
 
+protoc --go_out=$absoulte_path/biz/goods --go_opt=paths=source_relative \
+    --go-grpc_out=$absoulte_path/biz/goods --go-grpc_opt=paths=source_relative \
+    goods.proto
+
+
+
+
 
 

@@ -101,6 +101,7 @@ func Run(ctx context.Context) error {
 
 	// instanceId 不同实列 要不同
 	var instanceId string
+	var grpcInstanceId string
 	consulClient = discovery.NewDiscoveryClient(conf.GetString("consul_addr"), conf.GetInt("consul_port"))
 	instanceId = "httpserve:" + "-" + uuid.New().String()
 	err := consulClient.Register(ctx, 0, "httpserve", instanceId, "/health", conf.GetString("http_addr"), conf.GetInt("http_port"), nil, nil)
@@ -110,8 +111,8 @@ func Run(ctx context.Context) error {
 
 	//grpc 服务注册
 
-	instanceId = "grpcserve:" + "-" + uuid.New().String()
-	err = consulClient.Register(ctx, 1, "grpcserve", instanceId, "", conf.GetString("grpc_addr"), conf.GetInt("grpc_port"), nil, nil)
+	grpcInstanceId = "grpcserve:" + "-" + uuid.New().String()
+	err = consulClient.Register(ctx, 1, "grpcserve", grpcInstanceId, "", conf.GetString("grpc_addr"), conf.GetInt("grpc_port"), nil, nil)
 	if err != nil {
 		log.Fatalf("register service err : %s", err)
 	}
@@ -131,7 +132,9 @@ func Run(ctx context.Context) error {
 			close(stopChan)
 		}
 	}
-	return consulClient.Deregister(ctx, instanceId)
+	
+	consulClient.Deregister(ctx, instanceId)
+	return consulClient.Deregister(ctx, grpcInstanceId)
 }
 
 func HttpServe(ctx context.Context, stop <-chan struct{}) error {

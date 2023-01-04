@@ -2,6 +2,7 @@ package grpc
 
 import (
 	"crgo/biz/auth"
+	"crgo/biz/goods"
 	"crgo/biz/session"
 	"crgo/biz/user"
 	"crgo/grpc/biz/bootstrap"
@@ -41,7 +42,11 @@ func NewGrpcServe() *grpc.Server {
 func registerService(s *grpc.Server) {
 	helloworld.RegisterGreeterServer(s, &helloworld.Binding{})
 	bootstrap.RegisterBootstrapServer(s, bootstrap.NewService(session.NewService()))
+	// 用户服务， 暂时不区分 服务，都统一在一个服务里面， 知道怎么玩就行
 	user.RegisterUserServer(s, user.NewUserService())
+
+	//商品服务
+	goods.RegisterGoodsServer(s, goods.NewGoodsService())
 }
 
 func NewListen() net.Listener {
