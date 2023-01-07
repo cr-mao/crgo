@@ -50,7 +50,23 @@ func ModelToResponse(goods models.Goods) GoodsInfoResponse {
 }
 
 func (s *GoodsService) GoodsList(ctx context.Context, req *GoodsFilterRequest) (*GoodsListResponse, error) {
-	return nil, nil
+
+	goodsListResponse := &GoodsListResponse{}
+	localDB := db.GetDb("goods").Model(models.Goods{})
+
+	//查询id在某个数组中的值
+	goodsListResponse.Total = 4
+	var goods []models.Goods
+	re := localDB.Preload("Category").Preload("Brands").Find(&goods, []int32{1, 2, 3, 4})
+	if re.Error != nil {
+		return nil, re.Error
+	}
+
+	for _, good := range goods {
+		goodsInfoResponse := ModelToResponse(good)
+		goodsListResponse.Data = append(goodsListResponse.Data, &goodsInfoResponse)
+	}
+	return goodsListResponse, nil
 }
 
 //现在用户提交订单有多个商品，你得批量查询商品的信息吧

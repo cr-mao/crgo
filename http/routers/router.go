@@ -2,6 +2,7 @@ package routers
 
 import (
 	"crgo/http/controllers/api/v1/auth"
+	"crgo/http/controllers/api/v1/goods"
 	"crgo/http/controllers/api/v1/user"
 	"log"
 	"net/http"
@@ -65,8 +66,16 @@ func RegisterAPIRoutes(r *gin.Engine) {
 		userController := &user.UserController{}
 		v1.POST("/login", userController.Login)
 
-		authRoute := v1.Use(middleware.JWTAuth())
-		authRoute.GET("/user_list", userController.GetUserList)
+		userRoute := v1.Use(middleware.JWTAuth())
+		userRoute.GET("/user_list", userController.GetUserList)
+
+		//商品api 。
+		goodsController := &goods.GoodsController{}
+		goodsRoute := v1.Group("goods")
+		goodsRoute.GET("", goodsController.List)                                //商品列表
+		goodsRoute.POST("", middleware.JWTAuth(), goodsController.New)          //改接口需要管理员权限
+		goodsRoute.DELETE("/:id", middleware.JWTAuth(), goodsController.Delete) //改接口需要管理员权限
+		goodsRoute.GET("/:id", goodsController.Detail)                          //获取商品的详情
 	}
 
 }
