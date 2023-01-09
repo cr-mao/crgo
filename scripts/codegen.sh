@@ -31,7 +31,9 @@ protoc --go_out=$absoulte_path/biz/goods --go_opt=paths=source_relative \
     goods.proto
 
 
-
+protoc --go_out=$absoulte_path/biz/inventory --go_opt=paths=source_relative \
+    --go-grpc_out=$absoulte_path/biz/inventory --go-grpc_opt=paths=source_relative \
+    inventory.proto
 
 
 

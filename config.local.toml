@@ -39,6 +39,12 @@ max_open_conns = 30
 mac_idle_conns = 10
 max_life_seconds = 300
 debug = false
+[database.inventory]
+dsn = "root:root@tcp(127.0.0.1:3306)/inventory?parseTime=true&charset=utf8mb4&loc=Asia%2FShanghai"
+max_open_conns = 30
+mac_idle_conns = 10
+max_life_seconds = 300
+debug = false
 
 
 [database.goods]
