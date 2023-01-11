@@ -2,6 +2,7 @@ package goods
 
 import (
 	"context"
+	"crgo/biz/common"
 	"crgo/infra/db"
 	"crgo/models"
 	"encoding/json"
@@ -96,7 +97,7 @@ func (s *GoodsService) DeleteCategory(ctx context.Context, req *DeleteCategoryRe
 	return &emptypb.Empty{}, nil
 }
 
-func (s *GoodsService) UpdateCategory(ctx context.Context, req *CategoryInfoRequest) (*emptypb.Empty, error) {
+func (s *GoodsService) UpdateCategory(ctx context.Context, req *CategoryInfoRequest) (*common.Empty2, error) {
 	var category models.Category
 
 	if result := db.GetDb("goods").First(&category, req.Id); result.RowsAffected == 0 {
@@ -118,5 +119,5 @@ func (s *GoodsService) UpdateCategory(ctx context.Context, req *CategoryInfoRequ
 
 	db.GetDb("goods").Save(&category)
 
-	return &emptypb.Empty{}, nil
+	return &common.Empty2{}, nil
 }

@@ -1,5 +1,10 @@
 syntax = "proto3";
+
+package crgo.gateway;
+
 import "google/protobuf/empty.proto";
+import "common.proto";
+
 option go_package = "biz/goods";
 
 
@@ -19,7 +24,7 @@ service Goods{
     rpc GetSubCategory(CategoryListRequest) returns(SubCategoryListResponse);
     rpc CreateCategory(CategoryInfoRequest) returns(CategoryInfoResponse); //新建分类信息
     rpc DeleteCategory(DeleteCategoryRequest) returns(google.protobuf.Empty); //删除分类
-    rpc UpdateCategory(CategoryInfoRequest) returns(google.protobuf.Empty); //修改分类信息
+    rpc UpdateCategory(CategoryInfoRequest) returns(Empty2); //修改分类信息
 
     //品牌和轮播图
     rpc BrandList(BrandFilterRequest) returns(BrandListResponse); //

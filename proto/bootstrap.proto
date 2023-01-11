@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package crgo.gateway;
 
-option go_package = "biz/bootstrap";
+option go_package = "grpc/biz/bootstrap";
 
 //app 启动的时候 调用
 service Bootstrap {
@@ -12,6 +12,7 @@ service Bootstrap {
 message BootstrapRequest{
   string sessionId = 1; // 客户端本地保存该 sessionId，启动时传递过来，拿不到时传空
 }
+
 
 message BootstrapResponse {
   int64 errCode = 1;

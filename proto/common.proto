@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package crgo.gateway;
+
+option go_package = "crgo/biz/common";
+
+//只是为了测试倒入其他proto文件到功能，这个empty 它其实已经自带实现了。
+message Empty2{
+}
+
