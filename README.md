@@ -35,12 +35,24 @@ docker run -d --name prometheus -p 9090:9090 -v /Users/mac/code/crgo/build/prome
 ```
 
 
+#### jaeger 本地启动
+
+https://www.jaegertracing.io/docs/1.41/getting-started/
+
+```shell
+docker run --rm --name jaeger -p6831:6831/udp -p16686:16686 jaegertracing/all-in-one:latest
+```
+
+
+
 #### 构建镜像
 
 ```shell
 ## 注意项目里面的 一些服务地址 如mysql,redis 要修改成 容器ip ...不然跑不起来的。 
 docker build -t crgo:v1  --build-arg VERSION="$(git rev-parse --short HEAD)",BUILDTIME="$(date +%FT%T)" -f  ./build/crgo/Dockerfile ./ 
 ```
+
+
 
 
 

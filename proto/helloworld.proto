@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package crgo.gateway;
 
-option go_package = "biz/helloworld";
+option go_package = "grpc/biz/helloworld";
 
 service Greeter {
   rpc SayHello (HelloRequest) returns (HelloResponse);
