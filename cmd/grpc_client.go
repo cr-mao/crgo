@@ -4,6 +4,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"crgo/grpc/client"
+	_ "crgo/infra/code" // 注册code 到错误code 关联
 	"crgo/infra/log"
 )
 

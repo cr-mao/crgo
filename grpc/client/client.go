@@ -3,7 +3,10 @@ package client
 import (
 	"context"
 	"crgo/grpc/biz/helloworld"
+	"crgo/infra/errors"
+	"fmt"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/status"
 	"log"
 )
 
@@ -12,8 +15,26 @@ func SayHello(client helloworld.GreeterClient) error {
 		Name: "crmao",
 	})
 	if err != nil {
+
+		s, ok := status.FromError(err)
+
+		if !ok {
+			fmt.Println("is not stardand grpc error")
+			return err
+		}
+		fmt.Println(111)
+		fmt.Println(s.Code())
+
+		//grpc 错误转为内部错误
+		e := errors.FromGrpcError(err)
+		Coder := errors.ParseCoder(e)
+		fmt.Println(2222)
+		fmt.Println(Coder.Code())
+		fmt.Println(Coder.HTTPStatus())
+
 		return err
 	}
+
 	log.Printf("client.Sayhello resp:%s", resp.Message)
 	return nil
 }
